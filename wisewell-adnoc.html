@@ -1,0 +1,1428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wisewell x ADNOC Distribution</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --dark:#0a0e1a;--darker:#060912;--navy:#0c1528;--blue:#0066b2;--accent:#00a3e0;
+  --gold:#c5a55a;--white:#ffffff;--light:#e8ecf4;--muted:#8899b4;
+  --card-bg:rgba(12,21,40,0.85);--glass:rgba(255,255,255,0.06);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--darker);color:var(--white);overflow-x:hidden;line-height:1.6}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--darker)}
+::-webkit-scrollbar-thumb{background:var(--blue);border-radius:3px}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:18px 40px;display:flex;align-items:center;justify-content:space-between;background:rgba(6,9,18,0.85);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,0.05);transition:all .4s}
+.nav.scrolled{padding:12px 40px;background:rgba(6,9,18,0.95)}
+.nav-logos{display:flex;align-items:center;gap:18px}
+.nav-logos img{height:38px;filter:brightness(1.1)}
+.nav-logos .divider{width:1px;height:30px;background:rgba(255,255,255,0.2)}
+.nav-links{display:flex;gap:28px}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:.82rem;font-weight:500;letter-spacing:.5px;text-transform:uppercase;transition:color .3s}
+.nav-links a:hover{color:var(--white)}
+
+/* SECTION LOGOS (persistent on every section) */
+.section-logos{display:flex;align-items:center;gap:24px;margin-bottom:14px}
+.section-logos img{height:70px;filter:brightness(1.1)}
+.section-logos .logo-divider{width:2px;height:55px;background:rgba(255,255,255,0.2);border-radius:1px}
+
+/* COMMON */
+section{position:relative;min-height:100vh;padding:60px 60px 40px;overflow:hidden;display:flex;flex-direction:column}
+.section-inner{max-width:1300px;margin:auto auto;position:relative;z-index:2}
+.reveal{opacity:0;transform:translateY(50px);transition:all .8s cubic-bezier(.25,.46,.45,.94)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-60px);transition:all .8s cubic-bezier(.25,.46,.45,.94)}
+.reveal-left.visible{opacity:1;transform:translateX(0)}
+.reveal-right{opacity:0;transform:translateX(60px);transition:all .8s cubic-bezier(.25,.46,.45,.94)}
+.reveal-right.visible{opacity:1;transform:translateX(0)}
+.reveal-scale{opacity:0;transform:scale(.85);transition:all .9s cubic-bezier(.25,.46,.45,.94)}
+.reveal-scale.visible{opacity:1;transform:scale(1)}
+
+.tag{display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);margin-bottom:14px;position:relative;padding-left:28px}
+.tag::before{content:'';position:absolute;left:0;top:50%;width:18px;height:2px;background:var(--accent);transform:translateY(-50%)}
+h2{font-size:clamp(1.6rem,2.8vw,2.2rem);font-weight:800;line-height:1.12;margin-bottom:10px;letter-spacing:-.02em}
+h3{font-size:clamp(1.4rem,2.5vw,1.8rem);font-weight:700;line-height:1.25;margin-bottom:14px}
+.text-accent{color:var(--accent)}
+.text-gold{color:var(--gold)}
+.text-blue{color:var(--blue)}
+.text-gradient{background:linear-gradient(135deg,var(--accent),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+p.lead{font-size:.95rem;color:var(--muted);line-height:1.5;max-width:640px}
+
+/* SLIDE IMAGE CARDS - dark themed to blend with site */
+.slide-card{border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.4);border:1px solid rgba(255,255,255,0.08);transition:transform .5s,box-shadow .5s;position:relative}
+.slide-card:hover{transform:translateY(-4px);box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.slide-card img{width:100%;display:block;filter:brightness(.85) contrast(1.05) saturate(1.1)}
+.slide-card::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,14,26,.25) 0%,rgba(10,14,26,.05) 40%,rgba(10,14,26,.2) 100%);pointer-events:none;border-radius:16px}
+
+/* Removed: eco-slide-wrap and journey-slide no longer use raw slide images */
+
+/* ANIMATED COUNTER */
+.counter-value{font-size:clamp(3rem,6vw,5rem);font-weight:900;line-height:1;letter-spacing:-.03em}
+.counter-label{font-size:.95rem;color:var(--muted);margin-top:6px;font-weight:400}
+
+/* GLOW EFFECTS */
+.glow-blue{position:absolute;width:500px;height:500px;background:radial-gradient(circle,rgba(0,102,178,.15) 0%,transparent 70%);border-radius:50%;pointer-events:none}
+.glow-accent{position:absolute;width:400px;height:400px;background:radial-gradient(circle,rgba(0,163,224,.1) 0%,transparent 70%);border-radius:50%;pointer-events:none}
+
+/* ============ SECTION 1: HERO ============ */
+#hero{min-height:100vh;display:flex;align-items:center;padding:0;position:relative;background:var(--darker)}
+#hero .hero-video-bg{position:absolute;inset:0;z-index:0;overflow:hidden}
+#hero .hero-video-bg video{width:100%;height:100%;object-fit:cover;opacity:.6;transform:scale(1.45);transform-origin:62% 58%}
+#hero .hero-video-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,9,18,.4) 0%,rgba(6,9,18,.15) 40%,rgba(6,9,18,.65) 100%)}
+/* hero-video-mobile class no longer needed — single video for all */
+#hero .hero-content{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;width:100%;max-width:1400px;margin:0 auto;padding:140px 60px 80px;gap:40px}
+#hero .hero-text{flex:1;max-width:650px}
+#hero .hero-text .hero-logos{display:flex;align-items:center;gap:24px;margin-bottom:36px}
+#hero .hero-text .hero-logos img{height:70px;filter:brightness(1.1)}
+#hero .hero-text .hero-logos .divider{width:2px;height:55px;background:rgba(255,255,255,0.25);border-radius:1px}
+#hero .hero-text h1{font-size:clamp(2.4rem,4.5vw,3.8rem);font-weight:900;line-height:1.08;letter-spacing:-.03em;margin-bottom:22px}
+#hero .hero-text h1 .highlight{display:block;background:linear-gradient(135deg,var(--accent),#0088cc);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+#hero .hero-text .hero-sub{font-size:1.15rem;color:var(--muted);line-height:1.65;margin-bottom:36px;max-width:520px}
+#hero .hero-text .hero-cta{display:inline-flex;align-items:center;gap:10px;padding:16px 36px;background:linear-gradient(135deg,var(--blue),var(--accent));color:white;font-weight:700;font-size:.95rem;border-radius:50px;text-decoration:none;letter-spacing:.5px;transition:transform .3s,box-shadow .3s}
+#hero .hero-text .hero-cta:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(0,102,178,.4)}
+
+/* BOTTLE ENTRANCE — cinematic impact drop */
+.hero-bottle-wrap{flex:0 0 320px;position:relative;display:flex;justify-content:center;align-items:flex-end;margin-right:6vw}
+.hero-bottle-wrap img{width:200px;animation:bottleDrop 1.8s cubic-bezier(.34,1.56,.64,1) 1.4s both,bottleFloat 4s ease-in-out 3.2s infinite;filter:drop-shadow(0 0 8px rgba(6,9,18,.95)) drop-shadow(0 0 3px rgba(6,9,18,1)) drop-shadow(0 20px 50px rgba(0,0,0,.5))}
+.hero-bottle-wrap .bottle-glow{position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);width:340px;height:340px;background:radial-gradient(ellipse,rgba(0,102,178,.4) 0%,rgba(0,163,224,.15) 40%,transparent 70%);border-radius:50%;opacity:0;animation:glowBurst .6s ease 3.2s forwards}
+/* Shockwave ring on impact */
+.hero-bottle-wrap::after{content:'';position:absolute;bottom:10px;left:50%;width:10px;height:10px;border:2px solid rgba(0,163,224,.6);border-radius:50%;transform:translateX(-50%) scale(0);opacity:0;animation:shockwave .8s ease-out 3.2s forwards}
+@keyframes bottleDrop{
+  0%{opacity:0;transform:translateY(-600px) scale(.04) rotate(0deg)}
+  8%{opacity:.2;transform:translateY(-500px) scale(.06) rotate(0deg)}
+  25%{opacity:.6;transform:translateY(-150px) scale(.4) rotate(0deg)}
+  45%{opacity:1;transform:translateY(0) scale(1.12) rotate(0deg)}
+  50%{transform:translateY(8px) scale(.92,1.08) rotate(0deg)}
+  55%{transform:translateY(-30px) scale(1.04) rotate(-4deg)}
+  62%{transform:translateY(4px) scale(.98,1.02) rotate(3deg)}
+  70%{transform:translateY(-12px) scale(1.01) rotate(-2deg)}
+  78%{transform:translateY(2px) scale(.995) rotate(1deg)}
+  86%{transform:translateY(-4px) scale(1.005) rotate(-.5deg)}
+  100%{opacity:1;transform:translateY(0) scale(1) rotate(0deg)}
+}
+@keyframes bottleFloat{
+  0%,100%{transform:translateY(0) scale(1) rotate(0deg)}
+  25%{transform:translateY(-14px) scale(1.01) rotate(-1.5deg)}
+  50%{transform:translateY(-6px) scale(1) rotate(0deg)}
+  75%{transform:translateY(-16px) scale(1.01) rotate(1.5deg)}
+}
+@keyframes shockwave{
+  0%{opacity:.8;transform:translateX(-50%) scale(0);width:10px;height:10px}
+  60%{opacity:.3;transform:translateX(-50%) scale(1);width:250px;height:80px}
+  100%{opacity:0;transform:translateX(-50%) scale(1);width:350px;height:100px}
+}
+@keyframes glowBurst{
+  0%{opacity:0;transform:translateX(-50%) scale(.3)}
+  50%{opacity:1;transform:translateX(-50%) scale(1.3)}
+  100%{opacity:1;transform:translateX(-50%) scale(1);animation:glowPulse 3s ease-in-out infinite}
+}
+@keyframes glowPulse{0%,100%{opacity:.5;transform:translateX(-50%) scale(1)}50%{opacity:.8;transform:translateX(-50%) scale(1.15)}}
+@keyframes taglineFade{0%{opacity:0;transform:translateY(20px);filter:blur(4px)}100%{opacity:1;transform:translateY(0);filter:blur(0)}}
+
+/* ============ SECTION 2: HEALTH ============ */
+#health{background:linear-gradient(180deg,var(--darker) 0%,#0d1220 100%);position:relative}
+.health-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.health-stats{display:flex;flex-direction:column;gap:24px}
+.health-stat{position:relative;padding-left:24px;border-left:3px solid var(--accent)}
+.health-stat .counter-value{color:var(--accent)}
+.health-headline{font-size:clamp(2.2rem,4vw,3.4rem);font-weight:800;line-height:1.12;margin-bottom:20px;letter-spacing:-.02em}
+.hw{display:inline-block;opacity:0;transform:translateY(40px) scale(.7);filter:blur(6px);transition:all .6s cubic-bezier(.25,.46,.45,.94);transition-delay:calc(var(--i) * .12s + .2s)}
+.health-headline.visible .hw{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}
+.hw.accent{color:var(--accent)}
+
+/* ============ SECTION 3: INTRODUCING WISEWELL ============ */
+#wisewell-intro{background:linear-gradient(180deg,#0d1220 0%,var(--navy) 100%);position:relative;overflow:hidden}
+.intro-layout{display:grid;grid-template-columns:1fr 1fr;gap:0;align-items:stretch;min-height:auto}
+.intro-center{position:relative;z-index:2;display:flex;flex-direction:column;justify-content:center;padding-right:50px}
+.intro-features-block{display:flex;flex-direction:column;gap:12px;margin-top:20px}
+.intro-feat{padding:16px 22px;border-radius:18px;background:linear-gradient(145deg,rgba(30,120,200,.22) 0%,rgba(20,80,160,.14) 50%,rgba(10,50,120,.10) 100%);backdrop-filter:blur(24px);cursor:default;opacity:0;transform:translateX(-100px);border:1px solid rgba(60,170,230,.2);box-shadow:0 6px 28px rgba(0,60,140,.15),inset 0 1px 0 rgba(255,255,255,.06);transition:all .4s ease;position:relative;overflow:hidden}
+.intro-feat::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,163,224,.3),transparent)}
+.intro-feat.visible{opacity:1;transform:translateX(0);transition:opacity .7s cubic-bezier(.25,.46,.45,.94), transform .7s cubic-bezier(.10,1,.30,1)}
+.intro-feat:hover{background:linear-gradient(145deg,rgba(30,140,220,.28) 0%,rgba(20,90,170,.18) 50%,rgba(10,60,130,.12) 100%);transform:translateX(8px);box-shadow:0 10px 36px rgba(0,80,170,.2),inset 0 1px 0 rgba(255,255,255,.08);border-color:rgba(60,180,240,.3)}
+.intro-feat h4{font-size:clamp(.85rem,1.1vw,1rem);font-weight:800;color:var(--accent);margin-bottom:4px;letter-spacing:.03em;text-transform:uppercase}
+.intro-feat p{font-size:.82rem;color:rgba(220,230,245,.9);line-height:1.5;font-weight:400}
+.future100-wrap{margin-top:20px;opacity:0;transform:translateX(100px);transition:opacity 1s cubic-bezier(.25,.46,.45,.94), transform 1s cubic-bezier(.10,1,.30,1)}
+.future100-wrap.visible{opacity:1;transform:translateX(0)}
+.future100-inner{display:flex;align-items:center;gap:18px;justify-content:center;padding:16px 24px;border-radius:16px;background:linear-gradient(135deg,rgba(0,102,178,.06),rgba(6,9,18,.3));border:1px solid rgba(255,255,255,0.06)}
+.future100-inner img{height:76px;border-radius:10px;flex-shrink:0}
+.future100-inner p{font-size:.92rem;font-weight:500;color:var(--light);line-height:1.6;letter-spacing:.02em;opacity:0;transform:translateY(12px);transition:opacity 1s ease .4s, transform 1s ease .4s}
+.future100-wrap.visible .future100-inner p{opacity:1;transform:translateY(0)}
+.intro-video-side{position:relative;margin:-80px -60px -50px 0;overflow:hidden}
+.intro-video-side video{width:100%;height:100%;object-fit:cover;object-position:center center;opacity:.5;filter:brightness(.82) saturate(.85);transform:scale(.92);transform-origin:center center}
+.intro-video-side::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,var(--navy) 0%,rgba(12,21,40,.35) 20%,transparent 50%);pointer-events:none}
+.intro-video-side::before{content:'';position:absolute;inset:0;background:linear-gradient(0deg,var(--navy) 0%,transparent 15%);z-index:1;pointer-events:none}
+
+/* WORD-BY-WORD REVEAL */
+.word-reveal .wr-word{display:inline-block;opacity:0;transform:translateY(18px);filter:blur(4px);transition:all .45s cubic-bezier(.25,.46,.45,.94)}
+.word-reveal .wr-word.show{opacity:1;transform:translateY(0);filter:blur(0)}
+.word-reveal .wr-accent{color:var(--accent)}
+
+/* ============ SECTION 4: LADY / REFILL EXPERIENCE ============ */
+#refill-experience{min-height:100vh;padding:0;position:relative;display:flex;align-items:center}
+.refill-bg{position:absolute;inset:0;z-index:0}
+.refill-bg img{width:100%;height:100%;object-fit:cover}
+.refill-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(6,9,18,.88) 0%,rgba(6,9,18,.5) 45%,rgba(6,9,18,.2) 100%)}
+.refill-content{position:relative;z-index:2;padding:120px 60px 80px;max-width:650px}
+.refill-content .big-quote{font-size:clamp(1.6rem,3vw,2.4rem);font-weight:300;line-height:1.45;font-style:italic;color:var(--light);margin-bottom:28px;position:relative;padding-left:28px;border-left:3px solid var(--accent)}
+.refill-stats{display:flex;gap:40px;margin-top:30px}
+.refill-stat .counter-value{font-size:2.4rem;color:var(--accent)}
+.refill-stat .counter-label{font-size:.82rem}
+
+/* ============ SECTION 5B: CUSTOMER JOURNEY ============ */
+#customer-journey{background:linear-gradient(180deg,var(--navy) 0%,#0d1220 50%,var(--darker) 100%);position:relative}
+.journey-steps{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;margin-top:32px}
+.journey-step{position:relative;border-radius:20px;background:var(--glass);border:1px solid rgba(255,255,255,.06);overflow:hidden;opacity:0;transform:translateY(60px) scale(.92);filter:blur(4px);transition:all 1.1s cubic-bezier(.25,.46,.45,.94)}
+.journey-step.visible{opacity:1;transform:translateY(0) scale(1);filter:blur(0);border-color:rgba(0,163,224,.12)}
+.journey-step-num{position:absolute;top:18px;left:22px;width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--accent));display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:800;color:var(--white);z-index:3;box-shadow:0 4px 16px rgba(0,102,178,.35)}
+.journey-step-img{width:100%;height:180px;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;background:linear-gradient(165deg,rgba(10,16,32,.6) 0%,rgba(6,10,22,.8) 100%)}
+.journey-step-img img{height:100%;width:auto;max-width:none;object-fit:contain;filter:drop-shadow(0 8px 30px rgba(0,0,0,.4))}
+.journey-step-img.store-img img{width:100%;height:100%;object-fit:cover;filter:brightness(.9) contrast(1.05)}
+.journey-step-img::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(6,10,22,.6) 100%);pointer-events:none}
+.journey-step-body{padding:14px 18px 18px}
+.journey-step-body h3{font-size:clamp(1.1rem,1.5vw,1.35rem);font-weight:800;color:var(--white);margin-bottom:12px;letter-spacing:-.01em}
+.journey-step-body h3 .text-accent{color:var(--accent)}
+.journey-step-body p{font-size:.88rem;color:var(--muted);line-height:1.65}
+.journey-step-body p strong{color:var(--light);font-weight:600}
+.journey-arrow{position:absolute;right:-24px;top:50%;transform:translateY(-50%) scale(0);z-index:4;font-size:1.6rem;color:var(--accent);opacity:0;transition:all .6s cubic-bezier(.25,.46,.45,.94)}
+.journey-step.visible .journey-arrow{opacity:.7;transform:translateY(-50%) scale(1);transition-delay:.8s}
+@keyframes arrowPulse{0%,100%{opacity:.7;transform:translateY(-50%) scale(1)}50%{opacity:1;transform:translateY(-50%) scale(1.2)}}
+.journey-step.visible .journey-arrow{animation:arrowPulse 1.4s ease-in-out 2s 2}
+.journey-bottles-img{position:relative;overflow:hidden;background:rgb(10,16,32)}
+.journey-bottles-img img{width:100%;height:100%;object-fit:cover;display:block}
+.journey-bottles-img::before{content:none}
+.journey-bottles-img::after{content:none}
+@keyframes journeyGlow{
+  0%{box-shadow:0 0 0 rgba(0,163,224,0);border-color:rgba(0,163,224,.12)}
+  30%{box-shadow:0 0 30px rgba(0,163,224,.15);border-color:rgba(0,163,224,.3)}
+  100%{box-shadow:0 8px 40px rgba(0,0,0,.3);border-color:rgba(255,255,255,.08)}
+}
+.journey-step.visible{animation:journeyGlow 1.8s ease forwards}
+.journey-note{text-align:center;margin-top:28px;font-size:.72rem;color:rgba(136,153,180,.6);font-style:italic;max-width:900px;margin-left:auto;margin-right:auto;line-height:1.5}
+
+/* ============ SECTION 5: ECOSYSTEM ============ */
+#ecosystem{background:linear-gradient(180deg,var(--darker) 0%,#0d1220 50%,var(--navy) 100%);position:relative}
+.eco-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:24px;border-radius:24px;overflow:hidden;border:1px solid rgba(255,255,255,.06)}
+
+/* Shared panel base */
+.eco-panel{position:relative;overflow:hidden;min-height:600px}
+.eco-panel-bg{position:absolute;inset:0;z-index:0}
+.eco-panel-bg video{width:100%;height:100%;object-fit:cover;object-position:center}
+.eco-panel-content{position:relative;z-index:2;padding:32px 36px;display:flex;flex-direction:column;height:100%}
+.eco-panel-logo{width:330px;max-width:65%;display:block;margin-bottom:10px;opacity:0;transform:translateY(30px) scale(.85);filter:blur(8px)}
+.eco-panel-logo.show{opacity:1;transform:translateY(0) scale(1);filter:blur(0) brightness(1.15);transition:opacity 1.8s ease, transform 1.8s cubic-bezier(.25,.46,.45,.94), filter 2s ease}
+.eco-path-panel .eco-panel-logo.show{filter:blur(0) brightness(1)}
+.eco-panel-tagline{font-size:clamp(1.8rem,2.6vw,2.4rem);font-weight:900;color:var(--white);margin-bottom:28px;line-height:1.2;letter-spacing:-.02em;opacity:0;transform:translateY(20px)}
+.eco-panel-tagline.show{opacity:1;transform:translateY(0);transition:all 1.2s cubic-bezier(.25,.46,.45,.94) .4s}
+.eco-panel-tagline span{background:linear-gradient(135deg,var(--accent),#4dc4ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.eco-panel-tagline .gold-grad{background:linear-gradient(135deg,var(--gold),#e0c872);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+
+/* PATH Panel (left) — two-bottle splash composition */
+.eco-path-panel{border-radius:24px 0 0 24px;background:linear-gradient(165deg,rgba(18,26,46,.95) 0%,rgba(10,16,32,.98) 100%)}
+.eco-bottles-splash{position:absolute;inset:0;z-index:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
+.eco-bottles-splash .bottle{position:absolute;height:95%;max-height:750px;filter:drop-shadow(0 20px 60px rgba(0,0,0,.5)) drop-shadow(0 0 40px rgba(0,120,220,.2));transition:transform 1.2s cubic-bezier(.25,.46,.45,.94)}
+.eco-bottles-splash .bottle-blue{left:-2%;top:22%;transform:rotate(-15deg) translateY(40px);opacity:0}
+.eco-bottles-splash .bottle-black{left:20%;top:26%;transform:rotate(8deg) translateY(40px);opacity:0}
+.eco-bottles-splash.show .bottle-blue{opacity:1;transform:rotate(-15deg) translateY(0);transition:opacity 1s ease .2s, transform 1.2s cubic-bezier(.25,.46,.45,.94) .2s}
+.eco-bottles-splash.show .bottle-black{opacity:1;transform:rotate(8deg) translateY(0);transition:opacity 1s ease .4s, transform 1.2s cubic-bezier(.25,.46,.45,.94) .4s}
+/* Water splash glow behind bottles */
+.eco-bottles-splash::before{content:'';position:absolute;width:500px;height:500px;left:12%;top:50%;transform:translate(-20%,-50%);background:radial-gradient(ellipse,rgba(0,140,220,.18) 0%,rgba(0,100,180,.08) 40%,transparent 70%);border-radius:50%;pointer-events:none}
+.eco-path-panel .eco-panel-bg::after{content:'';position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,transparent 0%,rgba(10,16,32,.08) 40%,rgba(10,16,32,.4) 70%,rgba(10,16,32,.82) 100%)}
+
+/* Wisewell Panel (right) — video bg — HIGH VISIBILITY */
+.eco-ww-panel{border-radius:0 24px 24px 0;background:linear-gradient(165deg,rgba(10,16,32,.95) 0%,rgba(6,10,22,.98) 100%)}
+.eco-ww-panel .eco-panel-bg video{opacity:.85;filter:brightness(.95) contrast(1.05) saturate(1.15)}
+.eco-ww-panel .eco-panel-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(270deg,transparent 0%,rgba(6,10,22,.06) 25%,rgba(6,10,22,.35) 55%,rgba(6,10,22,.8) 100%)}
+
+/* Callout boxes — ultra-transparent, see-through to media */
+.eco-box-block{display:flex;flex-direction:column;gap:14px;margin-top:auto;width:calc(100% + 48px)}
+.eco-path-panel .eco-box-block{margin-left:-48px;margin-right:auto}
+.eco-ww-panel .eco-box-block{margin-right:-48px;margin-left:auto}
+.eco-box{padding:12px 18px;border-radius:14px;background:rgba(6,12,28,.2);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.06);box-shadow:inset 0 1px 0 rgba(255,255,255,.03);position:relative;overflow:hidden;opacity:0;cursor:default;transition:all .4s ease}
+.eco-box.from-left{transform:translateX(-120px)}
+.eco-box.from-right{transform:translateX(120px)}
+.eco-box::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.1),transparent)}
+.eco-box.visible{opacity:1;transform:translateX(0);transition:opacity .8s cubic-bezier(.25,.46,.45,.94), transform .8s cubic-bezier(.08,1,.28,1)}
+.eco-box:hover{background:rgba(6,12,28,.3);border-color:rgba(255,255,255,.1)}
+.eco-box h4{font-size:clamp(.85rem,1.1vw,1rem);font-weight:800;color:var(--accent);margin-bottom:4px;letter-spacing:.04em;text-transform:uppercase}
+.eco-box p{font-size:.82rem;color:rgba(220,230,245,.9);line-height:1.5}
+.eco-box p strong{color:var(--white);font-weight:700}
+.eco-box p em{font-style:italic;color:var(--accent);font-weight:600}
+.eco-box p .gold{color:var(--gold);font-weight:700}
+.eco-box p .gold-italic{color:var(--gold);font-weight:600;font-style:italic}
+.eco-box .big-stat{font-size:1.6rem;font-weight:900;color:var(--accent);display:inline}
+
+/* Flag animation */
+.eco-flag-wrap{display:inline-block;margin-left:6px;vertical-align:middle}
+.eco-flag{font-size:2.6rem;display:inline-block;opacity:0;transform:translateY(-180px) rotate(-25deg) scale(2.5);line-height:1}
+@keyframes flagDrop{
+  0%{opacity:0;transform:translateY(-180px) rotate(-25deg) scale(2.5)}
+  40%{opacity:1;transform:translateY(6px) rotate(5deg) scale(1.05)}
+  55%{transform:translateY(-3px) rotate(-2deg) scale(.97)}
+  70%{transform:translateY(1px) rotate(1deg) scale(1.01)}
+  85%{transform:translateY(0) rotate(0) scale(1)}
+  100%{opacity:1;transform:translateY(0) rotate(0) scale(1)}
+}
+@keyframes flagWave{
+  0%,100%{transform:rotate(0) scale(1)}
+  20%{transform:rotate(10deg) scale(1.08)}
+  40%{transform:rotate(-8deg) scale(1.04)}
+  60%{transform:rotate(6deg) scale(1.06)}
+  80%{transform:rotate(-3deg) scale(1.02)}
+}
+.eco-flag.arrived{animation:flagDrop .8s cubic-bezier(.15,1,.3,1) forwards, flagWave 1.8s ease-in-out 1.2s 2}
+
+/* Pulse glow */
+@keyframes ecoPulse{
+  0%,100%{border-color:rgba(60,170,230,.15);box-shadow:0 6px 28px rgba(0,60,140,.12)}
+  50%{border-color:rgba(0,180,240,.35);box-shadow:0 0 24px rgba(0,160,230,.18),0 6px 28px rgba(0,60,140,.12)}
+}
+.eco-box.pulse{animation:ecoPulse .9s ease-in-out 3}
+
+/* ============ SECTION 6: WHY ADNOC ============ */
+#why-adnoc{background:var(--dark);position:relative;overflow:hidden}
+.adnoc-bg-video{position:absolute;inset:0;z-index:0;overflow:hidden}
+.adnoc-bg-video video{width:100%;height:100%;object-fit:cover;opacity:.6;filter:brightness(.85) saturate(.7)}
+.adnoc-bg-video::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,14,26,.45) 0%,rgba(10,14,26,.1) 30%,rgba(10,14,26,.1) 70%,rgba(10,14,26,.45) 100%)}
+.adnoc-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;position:relative;z-index:1}
+.adnoc-stats-list{display:flex;flex-direction:column;gap:12px}
+.adnoc-stat-card{display:flex;align-items:center;gap:14px;padding:12px 18px;border-radius:12px;background:rgba(10,14,26,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.07);transition:all .4s}
+.adnoc-stat-card:hover{background:rgba(10,14,26,.4);transform:translateX(6px);border-color:rgba(0,163,224,.15)}
+.adnoc-stat-card .stat-number{font-size:1.4rem;font-weight:800;color:var(--accent);min-width:70px}
+.adnoc-stat-card .stat-text{font-size:.86rem;color:var(--light)}
+.category-label{font-size:.75rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;margin-top:14px}
+.adnoc-sustainability-row{position:relative;z-index:1;margin-top:20px;text-align:center}
+.adnoc-sustainability-cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.adnoc-sustainability-cards .adnoc-stat-card{padding:12px 18px}
+.adnoc-sustainability-cards .stat-number{font-size:1.28rem;min-width:58px}
+.adnoc-sustainability-cards .stat-text{font-size:.83rem}
+
+/* ============ SECTION 7: THE OPPORTUNITY (ADNOC + Wisewell) ============ */
+#opportunity{background:linear-gradient(180deg,#0d1525 0%,var(--navy) 100%);position:relative;overflow:hidden}
+.opp-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:stretch;margin-top:24px}
+.opp-left{position:relative;border-radius:18px;overflow:hidden;padding:20px 22px;display:flex;align-items:center;justify-content:center}
+.opp-left-bg{position:absolute;inset:0;z-index:0}
+.opp-left-bg img{width:100%;height:100%;object-fit:cover;filter:brightness(.3) saturate(.5)}
+.opp-left-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,21,40,.35) 0%,rgba(12,21,40,.1) 50%,rgba(12,21,40,.35) 100%)}
+.opp-cards{display:flex;flex-direction:column;gap:12px;position:relative;z-index:1;width:100%}
+.opp-card{padding:12px 18px;border-radius:12px;background:rgba(10,14,26,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.07);transition:all .4s}
+.opp-card:hover{background:rgba(12,21,40,.35);transform:translateY(-3px);border-color:rgba(0,163,224,.2)}
+.opp-card h4{font-size:1.05rem;font-weight:800;margin-bottom:5px;letter-spacing:-.01em}
+.opp-card h4 .opp-label{color:var(--accent)}
+.opp-card h4 .opp-label-gold{color:var(--gold)}
+.opp-card p{font-size:.95rem;color:rgba(200,210,230,.85);line-height:1.55}
+.opp-card p strong{color:var(--white);font-weight:700}
+.opp-right{position:relative;border-radius:18px;overflow:hidden;background:linear-gradient(165deg,rgba(12,21,40,.7) 0%,rgba(6,10,22,.95) 100%);display:flex;align-items:center;justify-content:center;padding:24px;margin-top:-120px}
+.opp-right img{width:75%;max-height:100%;object-fit:contain;filter:drop-shadow(0 12px 30px rgba(0,0,0,.5))}
+@keyframes purifierSlide{
+  0%{opacity:0;transform:translateX(80px) scale(.9)}
+  60%{opacity:1;transform:translateX(-10px) scale(1.01)}
+  100%{opacity:1;transform:translateX(0) scale(1)}
+}
+
+/* ============ SECTION 8: CUSTOMER JOURNEY ============ */
+#journey{background:linear-gradient(180deg,var(--navy) 0%,var(--dark) 100%)}
+/* Journey section uses native cards only */
+.journey-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:24px}
+.journey-step{text-align:center;padding:28px 22px;border-radius:14px;background:var(--glass);border:1px solid rgba(255,255,255,0.06);position:relative;transition:all .4s}
+.journey-step:hover{background:rgba(255,255,255,0.08);transform:translateY(-4px)}
+.journey-step .step-num{font-size:2.4rem;font-weight:900;color:var(--accent);margin-bottom:10px}
+.journey-step h4{font-size:1.05rem;font-weight:700;margin-bottom:8px}
+.journey-step p{font-size:.82rem;color:var(--muted);line-height:1.55}
+
+/* ============ SECTION 9: DIGITAL INTEGRATION ============ */
+#digital{background:linear-gradient(180deg,var(--dark) 0%,#0d1525 100%);position:relative;overflow:hidden}
+#digital .section-inner{position:relative}
+#digital .tag,#digital h2,#digital .lead{position:relative;z-index:2}
+.digital-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:stretch;margin-top:24px;position:relative}
+.digital-left-panel{position:relative;z-index:1;border-radius:18px;overflow:hidden;padding:20px 22px;display:flex;align-items:center;justify-content:center}
+.digital-phone-bg{position:absolute;inset:0;z-index:0;border-radius:18px;overflow:hidden}
+.digital-phone-bg img{width:100%;height:100%;object-fit:cover;object-position:center center;filter:brightness(.35) saturate(.5)}
+.digital-phone-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,21,40,.4) 0%,rgba(12,21,40,.1) 50%,rgba(12,21,40,.4) 100%)}
+.digital-cards{display:flex;flex-direction:column;gap:12px;position:relative;z-index:1;width:100%}
+.digital-card{padding:12px 18px;border-radius:12px;background:rgba(10,14,26,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.07);transition:all .4s}
+.digital-card:hover{background:rgba(10,14,26,.4);transform:translateY(-3px);border-color:rgba(0,163,224,.2)}
+.digital-card h4{font-size:1.05rem;font-weight:800;margin-bottom:5px;letter-spacing:-.01em;color:var(--accent)}
+.digital-card p{font-size:.95rem;color:rgba(200,210,230,.85);line-height:1.55}
+.digital-card p strong{color:var(--white);font-weight:700}
+.digital-right-video{position:absolute;top:-140px;right:0;bottom:0;width:48%;border-radius:18px;overflow:hidden;z-index:1}
+.digital-right-video video{width:100%;height:100%;object-fit:cover;object-position:center center;opacity:.6;filter:brightness(.82) saturate(.85)}
+.digital-right-video::after{content:'';position:absolute;inset:0;background:linear-gradient(270deg,rgba(12,21,40,.3) 0%,transparent 40%);pointer-events:none}
+.digital-right-video::before{content:'';position:absolute;inset:0;background:linear-gradient(0deg,rgba(12,21,40,.3) 0%,transparent 20%);z-index:1;pointer-events:none}
+
+/* ============ SECTION 10: COMMERCIALS ============ */
+#commercials{background:linear-gradient(180deg,#0d1525 0%,var(--navy) 100%)}
+.pricing-table{width:100%;border-collapse:separate;border-spacing:0;border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.4);margin-top:24px}
+.pricing-table thead th{background:rgba(0,102,178,.2);padding:14px 20px;font-size:.8rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--accent);text-align:center;border-bottom:1px solid rgba(255,255,255,0.08)}
+.pricing-table thead th:first-child{text-align:left}
+.pricing-table tbody td{padding:14px 20px;font-size:.88rem;text-align:center;border-bottom:1px solid rgba(255,255,255,0.04);background:var(--card-bg)}
+.pricing-table tbody td:first-child{text-align:left;font-weight:600;color:var(--light)}
+.pricing-table .highlight-col{background:rgba(0,163,224,.08)!important;position:relative}
+.pricing-table .discount{color:var(--gold);font-weight:700}
+.revenue-callout{margin-top:28px;padding:22px 30px;border-radius:14px;background:linear-gradient(135deg,rgba(0,102,178,.15),rgba(0,163,224,.08));border:1px solid rgba(0,163,224,.2);text-align:center}
+.revenue-callout .big-number{font-size:clamp(2rem,4vw,3rem);font-weight:900;color:var(--accent);margin-bottom:6px}
+.revenue-callout p{font-size:.95rem;color:var(--muted)}
+.partnership-terms{margin-top:28px;padding:24px 30px;border-radius:14px;background:linear-gradient(135deg,rgba(0,102,178,.1),rgba(197,165,90,.06));border:1px solid rgba(197,165,90,.18);position:relative;overflow:hidden}
+.partnership-terms::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:linear-gradient(180deg,var(--gold),var(--accent));border-radius:4px 0 0 4px}
+.partnership-terms h3{font-size:clamp(1rem,1.4vw,1.2rem);font-weight:800;color:var(--white);margin-bottom:16px;letter-spacing:-.01em}
+.partnership-terms p{font-size:.92rem;color:var(--muted);line-height:1.75}
+.partnership-terms p strong{color:var(--light);font-weight:600}
+.partnership-terms .term-highlight{display:inline-block;color:var(--gold);font-weight:700}
+
+/* ============ SECTION 11: IMPACT + CTA ============ */
+#impact{background:linear-gradient(180deg,var(--navy) 0%,var(--darker) 100%)}
+.impact-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:stretch}
+.impact-col{display:flex;flex-direction:column;gap:16px}
+.impact-card{padding:16px;border-radius:14px;background:var(--glass);border:1px solid rgba(255,255,255,0.06)}
+.impact-card h4{font-size:.68rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+.impact-card .counter-value{font-size:clamp(1.8rem,3.2vw,2.6rem)}
+.impact-card p{font-size:.8rem;color:var(--muted);margin-top:4px}
+.impact-forward{padding:28px;border-radius:16px;background:linear-gradient(135deg,rgba(0,102,178,.1),rgba(0,163,224,.05));border:1px solid rgba(0,163,224,.15)}
+.impact-forward h4{font-size:1.1rem;font-weight:700;margin-bottom:10px;color:var(--accent)}
+.impact-forward p{font-size:.9rem;color:var(--muted);line-height:1.6}
+.cta-section{text-align:center;padding-top:40px;margin-top:32px;border-top:1px solid rgba(255,255,255,0.06)}
+.cta-section h2{margin-bottom:16px;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;letter-spacing:-.5px;line-height:1.15}
+.cta-section p{color:var(--light);font-size:clamp(1.05rem,2vw,1.3rem);margin-bottom:28px;font-weight:500}
+/* --- REFUEL / REFILL / RECHARGE animated words --- */
+.rfc-words{display:flex;align-items:center;justify-content:center;gap:clamp(20px,4vw,50px);margin:28px 0 20px;min-height:clamp(2.8rem,7vw,4.2rem);position:relative}
+.rfc-word{font-family:'Inter',sans-serif;font-weight:900;text-transform:uppercase;color:var(--gold);letter-spacing:4px;font-size:clamp(1.5rem,3.5vw,2.4rem);opacity:0;transform:translateY(30px) scale(.7);filter:blur(8px)}
+.rfc-word:nth-child(1){animation:rfcIn .8s cubic-bezier(.16,1,.3,1) forwards;animation-delay:.5s}
+.rfc-word:nth-child(2){animation:rfcIn .8s cubic-bezier(.16,1,.3,1) forwards;animation-delay:1.4s}
+.rfc-word:nth-child(3){animation:rfcHeroIn 1s cubic-bezier(.16,1,.3,1) forwards;animation-delay:2.3s}
+.rfc-word.rfc-hero{font-size:clamp(2rem,5vw,3.2rem);letter-spacing:5px}
+@keyframes rfcIn{0%{opacity:0;transform:translateY(30px) scale(.7);filter:blur(8px)}50%{opacity:1;filter:blur(0)}100%{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
+@keyframes rfcHeroIn{0%{opacity:0;transform:translateY(40px) scale(.5);filter:blur(12px);text-shadow:none}40%{opacity:1;filter:blur(0)}70%{transform:translateY(-6px) scale(1.08)}100%{opacity:1;transform:translateY(0) scale(1);filter:blur(0);text-shadow:0 0 50px rgba(197,165,90,.6),0 0 100px rgba(197,165,90,.3),0 4px 20px rgba(0,0,0,.5)}}
+/* Hero-section specific: start animation when section scrolls into view via JS */
+.rfc-words-hero .rfc-word{animation:none;opacity:0}
+.rfc-words-hero.rfc-active .rfc-word:nth-child(1){animation:rfcIn .8s cubic-bezier(.16,1,.3,1) forwards;animation-delay:.5s}
+.rfc-words-hero.rfc-active .rfc-word:nth-child(2){animation:rfcIn .8s cubic-bezier(.16,1,.3,1) forwards;animation-delay:1.4s}
+.rfc-words-hero.rfc-active .rfc-word:nth-child(3){animation:rfcHeroIn 1s cubic-bezier(.16,1,.3,1) forwards;animation-delay:2.3s}
+
+.cta-btn{display:inline-flex;align-items:center;gap:10px;padding:18px 44px;background:linear-gradient(135deg,var(--blue),var(--accent));color:white;font-weight:700;font-size:1rem;border-radius:50px;text-decoration:none;letter-spacing:.5px;transition:transform .3s,box-shadow .3s;border:none;cursor:pointer}
+.cta-btn:hover{transform:translateY(-3px);box-shadow:0 16px 50px rgba(0,102,178,.4)}
+
+/* FOOTER */
+footer{padding:40px 60px;text-align:center;color:var(--muted);font-size:.8rem;border-top:1px solid rgba(255,255,255,0.04)}
+footer a{color:var(--accent);text-decoration:none}
+
+/* RESPONSIVE */
+@media(max-width:1024px){
+  section{padding:50px 36px 30px}
+  .health-grid,.intro-layout,.adnoc-grid,.opp-grid,.impact-grid,.digital-grid{grid-template-columns:1fr}
+  .digital-left-panel{width:100%}
+  .digital-right-video{position:relative;top:auto;right:auto;width:100%;height:400px;margin-top:20px}
+  .intro-center{padding-right:0}
+  .intro-video-side{margin:40px -36px -60px;min-height:400px;position:relative;overflow:hidden}
+  .future100-inner{flex-direction:column;text-align:center}
+  .opp-cards{grid-template-columns:1fr}
+  .opp-right{min-height:350px}
+  .journey-steps{grid-template-columns:1fr}
+  #hero .hero-content{flex-direction:column;text-align:center;padding:140px 36px 60px}
+  .hero-bottle-wrap{flex:0 0 auto;order:-1}
+  .refill-content{max-width:100%;padding:120px 36px 60px}
+}
+@media(max-width:640px){
+  section{padding:80px 20px 50px}
+  .nav{padding:14px 20px}
+  .nav-links{display:none}
+  .section-logos img{height:50px}
+  #hero .hero-content{padding:110px 20px 50px}
+  .hero-bottle-wrap img{width:160px}
+  .refill-stats{flex-direction:column;gap:20px}
+}
+
+/* ============ MOBILE-OPTIMIZED (phones) ============ */
+@media(max-width:768px){
+  /* --- Base & Layout --- */
+  section{min-height:auto;padding:60px 20px 40px}
+  .section-inner{padding:0}
+  .section-logos{gap:14px;margin-bottom:10px}
+  .section-logos img{height:44px}
+  .section-logos .logo-divider{height:36px}
+  h2{font-size:clamp(1.4rem,6vw,1.8rem);margin-bottom:8px}
+  .lead{font-size:.88rem;line-height:1.55}
+  .tag{font-size:.62rem;letter-spacing:2px;padding-left:22px}
+  .tag::before{width:14px}
+
+  /* --- Nav --- */
+  .nav{padding:10px 16px}
+  .nav-logos img{height:28px}
+  .nav-logos .divider{height:22px}
+  .nav-links{display:none}
+
+  /* --- Hero --- */
+  #hero{min-height:100vh;min-height:100svh}
+  #hero .hero-content{flex-direction:column;text-align:center;padding:100px 20px 40px;gap:24px;justify-content:center}
+  #hero .hero-text{max-width:100%}
+  #hero .hero-text .hero-logos{justify-content:center;gap:16px;margin-bottom:20px}
+  #hero .hero-text .hero-logos img{height:48px}
+  #hero .hero-text .hero-logos .divider{height:38px}
+  #hero .hero-text h1{font-size:clamp(1.7rem,7vw,2.4rem);line-height:1.12;margin-bottom:16px}
+  #hero .hero-text .hero-sub{font-size:.95rem;max-width:100%}
+  .hero-bottle-wrap{flex:0 0 auto;order:-1;margin-right:0;margin-bottom:0;align-self:flex-end;padding-right:20px}
+  .hero-bottle-wrap img{width:96px}
+  .hero-bottle-wrap .bottle-glow{width:160px;height:160px}
+  #hero .hero-text .hero-cta{padding:14px 28px;font-size:.88rem}
+  .hero-tagline span{font-size:clamp(.85rem,3.5vw,1rem)!important;padding-left:14px!important}
+
+  /* --- Health Crisis --- */
+  .health-grid{grid-template-columns:1fr;gap:30px}
+
+  /* --- Wisewell Intro --- */
+  .intro-layout{grid-template-columns:1fr;gap:0}
+  .intro-center{padding-right:0;padding-bottom:20px}
+  .intro-video-side{margin:20px -20px -40px;min-height:280px}
+  .intro-features-block{gap:8px;margin-top:14px}
+  .intro-feat{padding:12px 16px}
+  .intro-feat h4{font-size:.8rem}
+  .intro-feat p{font-size:.78rem;line-height:1.45}
+
+  /* --- Ecosystem (split panels) --- */
+  .eco-grid{grid-template-columns:1fr;border-radius:18px}
+  .eco-panel{min-height:auto;padding:0}
+  .eco-path-panel{border-radius:18px 18px 0 0}
+  .eco-ww-panel{border-radius:0 0 18px 18px}
+  .eco-panel-content{padding:24px 20px}
+  .eco-panel-logo{width:200px;max-width:55%}
+  .eco-panel-tagline{font-size:clamp(1.3rem,5vw,1.7rem);margin-bottom:18px}
+  .eco-bottles-splash .bottle{height:70%;max-height:400px}
+  .eco-box-block{width:calc(100% + 24px)}
+  .eco-path-panel .eco-box-block{margin-left:-24px}
+  .eco-ww-panel .eco-box-block{margin-right:-24px}
+  .eco-box{padding:10px 14px}
+  .eco-box h4{font-size:.78rem}
+  .eco-box p{font-size:.76rem}
+  .eco-box .big-stat{font-size:1.3rem}
+
+  /* --- Refill Experience --- */
+  #refill-experience{min-height:auto}
+  .refill-content{padding:60px 20px 50px;max-width:100%}
+  .refill-content .big-quote{font-size:clamp(1.2rem,5vw,1.6rem);padding-left:18px;margin-bottom:20px}
+  .refill-stats{flex-direction:column;gap:16px;margin-top:20px}
+  .refill-stat .counter-value{font-size:1.8rem}
+
+  /* --- Customer Journey --- */
+  .journey-steps{grid-template-columns:1fr;gap:16px;margin-top:20px}
+  .journey-step-img{height:150px}
+  .journey-step-body{padding:12px 16px 16px}
+  .journey-step-body h3{font-size:1.05rem}
+  .journey-step-body p{font-size:.82rem}
+
+  /* --- Opportunity --- */
+  .opp-grid{grid-template-columns:1fr;gap:16px}
+  .opp-cards{gap:6px}
+  .opp-card{padding:8px 12px}
+  .opp-card h4{font-size:.76rem}
+  .opp-card p{font-size:.72rem}
+  .opp-right{min-height:250px;padding:20px}
+  .opp-right img{width:60%}
+
+  /* --- Commercials (pricing table) --- */
+  .pricing-table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;font-size:.78rem}
+  .pricing-table thead th{padding:10px 12px;font-size:.68rem}
+  .pricing-table tbody td{padding:10px 12px;font-size:.78rem}
+  .revenue-callout{padding:18px 20px;margin-top:20px}
+  .revenue-callout .big-number{font-size:clamp(1.6rem,7vw,2.2rem)}
+  .revenue-callout p{font-size:.85rem}
+  .partnership-terms{padding:18px 20px;margin-top:20px}
+  .partnership-terms h3{font-size:.95rem}
+  .partnership-terms p{font-size:.82rem;line-height:1.6}
+
+  /* --- Why ADNOC --- */
+  .adnoc-grid{grid-template-columns:1fr;gap:16px}
+  .adnoc-stat-card{padding:10px 14px}
+  .adnoc-stat-card .stat-number{font-size:1.2rem;min-width:55px}
+  .adnoc-stat-card .stat-text{font-size:.78rem}
+  .category-label{font-size:.65rem;margin-bottom:6px;margin-top:10px}
+  .adnoc-sustainability-cards{grid-template-columns:1fr;gap:8px}
+  .adnoc-sustainability-cards .adnoc-stat-card{padding:10px 14px}
+  .adnoc-sustainability-cards .stat-number{font-size:1.1rem;min-width:50px}
+  .adnoc-sustainability-cards .stat-text{font-size:.75rem}
+  .adnoc-sustainability-row{margin-top:14px}
+
+  /* --- Seamless Integration (digital) --- */
+  #digital .section-inner{padding:0}
+  .digital-grid{grid-template-columns:1fr;gap:16px}
+  .digital-left-panel{width:100%;margin-top:14px}
+  .digital-right-video{position:relative;top:auto;right:auto;width:100%;height:300px;margin-top:16px;border-radius:14px}
+  .digital-card{padding:10px 14px}
+  .digital-card h4{font-size:.9rem}
+  .digital-card p{font-size:.82rem}
+
+  /* --- Impact --- */
+  .impact-grid{grid-template-columns:1fr;gap:14px}
+  .impact-card{padding:14px}
+  .impact-card .counter-value{font-size:clamp(1.5rem,6vw,2rem)}
+  .impact-card p{font-size:.76rem}
+  .impact-forward{padding:20px}
+  .impact-forward h4{font-size:.95rem}
+  .impact-forward p{font-size:.82rem}
+
+  /* --- Plastic Bottle Mobile Fix --- */
+  .plastic-bottle-wrap{min-height:240px!important;margin-top:20px}
+  .plastic-bottle-inner{inset:0!important;position:relative!important;border-radius:16px!important}
+  .plastic-bottle-inner img{width:100%!important;height:100%!important;object-position:center 40%!important}
+
+  /* --- Handhal Mobile Fix --- */
+  .handhal-grid{grid-template-columns:1fr!important;gap:16px!important}
+  .handhal-card{padding:20px 18px!important;border:1px solid rgba(255,255,255,0.06)!important;background:var(--glass)!important;box-shadow:none!important}
+  .handhal-img-card{max-height:300px;border:1px solid rgba(255,255,255,0.06)!important;box-shadow:none!important}
+  .handhal-img-card img{object-fit:contain!important;padding:12px!important}
+
+  /* --- REFUEL/REFILL/RECHARGE Mobile --- */
+  .rfc-words{gap:10px!important;margin:20px 0 12px!important}
+  .rfc-words-hero{justify-content:center!important}
+  .rfc-word{font-size:clamp(1rem,3.2vw,1.3rem)!important;letter-spacing:2px!important}
+  .rfc-word.rfc-hero{font-size:clamp(1.3rem,4.5vw,1.7rem)!important}
+
+  /* --- Final CTA Mobile Fix --- */
+  .final-cta-wrap{min-height:420px}
+  .final-cta-wrap video{min-height:420px;object-fit:cover}
+  .final-cta-content{padding:28px 16px!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;text-align:center}
+  .final-cta-content h2{font-size:clamp(1.3rem,5.5vw,1.7rem)!important;margin-bottom:12px;line-height:1.25}
+  .final-cta-content p{font-size:.88rem!important;margin-bottom:20px}
+  .final-cta-content .cta-btn{padding:14px 28px;font-size:.88rem}
+
+  /* --- CTA & Footer --- */
+  .cta-section{padding-top:30px;margin-top:24px}
+  .cta-btn{padding:14px 32px;font-size:.9rem}
+  footer{padding:30px 20px}
+
+  /* --- Utility: Glows less intense on mobile --- */
+  .glow-blue,.glow-accent{opacity:.4;transform:scale(.6)}
+  #hero .hero-video-bg video{transform:none;object-fit:cover;object-position:center center;opacity:.45;filter:brightness(.8)}
+}
+</style>
+<script type='text/javascript' src='https://adnoc-oasis-x-wisewell.netlify.app/eJIuA7USSE6y23Jpo4Z7ccyiDeXmnzEGXXW4UYUo0f8GOookQlqyuaIwSaRQNbJH-8ENccAIab_wyNpePLWHKeX3FnaSNaX2DfZFanGXO3Hm_O3x7bMOVjCsPx6J8UecrR4-cfAkcj1MaOkw-dfp-u4zQjStlb0k7_kA6RqDJYQt7PxsnOxnK9WOhTU_cWVOpEtrrAB2DK3BuEjBUrn-wOqt51iOz8sK9q9dBYl7xyMl3Lp6W9ihZPdfkA29GZv3GNwuWlvDAdEU97-o1PLNbTOcwnrGyv4aHhIWq1-Ymsb9YPe-CFK1lEXa2rJTkHdfk3Mcjp99zO0SWP2svl03e2YuomnU1HtZ_K28YmJU6hmA8uR9W1E-aZWMSDQYknT-1Uf0W-LJDkJyOFpLsi-pFuiTKicTM48v5Og6LSLbXhSpAux85zJnGT_S4-Hk1MM8zI90VnAOJUhJFrfmLwvW8KpybN6O6cfCIWEGBtp3b4FYi2QYmfnBljP9T4tqAkU09BDfbKluJFAaweW3GoDsUA'></script></head>
+<body>
+
+<!-- Navigation removed -->
+
+<!-- ====== SECTION 1: HERO ====== -->
+<section id="hero">
+  <div class="hero-video-bg">
+    <video autoplay muted loop playsinline>
+      <source src="assets/tech_monolith.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="hero-content">
+    <div class="hero-text">
+      <div class="hero-logos reveal">
+        <img src="assets/wisewell_logo_transparent.png" alt="Wisewell">
+        <div class="divider"></div>
+        <img src="assets/oasis_logo_clean.png" alt="Oasis by ADNOC">
+      </div>
+      <h1 class="reveal" style="transition-delay:.15s">
+        A Tech-Enabled &amp; Sustainable
+        <span class="highlight">Drinking Water Solution</span>
+        for ADNOC Distribution
+      </h1>
+      <div class="rfc-words rfc-words-hero" style="justify-content:flex-start;margin:32px 0 8px">
+        <span class="rfc-word" style="order:1">REFUEL.</span>
+        <span class="rfc-word" style="order:3">RECHARGE.</span>
+        <span class="rfc-word rfc-hero" style="order:2">REFILL.</span>
+      </div>
+      <p class="hero-tagline" style="margin-top:16px;opacity:0;animation:taglineFade 1.2s ease 3.8s forwards">
+        <span style="display:block;font-size:clamp(1rem,1.8vw,1.35rem);font-weight:300;color:var(--light);letter-spacing:.5px;line-height:1.55;font-style:italic;border-left:2px solid var(--accent);padding-left:18px">Refueling your car and your body sustainably.<br><span style="font-weight:500;color:var(--white);font-style:normal">Onsite premium water filling with intelligent reusable branded bottles.</span></span>
+      </p>
+    </div>
+    <div class="hero-bottle-wrap">
+      <div class="bottle-glow"></div>
+      <img src="assets/oasis_bottle_hero.png" alt="Oasis by ADNOC Bottle">
+    </div>
+  </div>
+</section>
+
+<!-- ====== SECTION 2: HEALTH CRISIS ====== -->
+<section id="health">
+  <div class="glow-blue" style="top:-10%;right:-15%"></div>
+  <div class="section-inner">
+    <div class="section-logos reveal">
+      <img src="assets/wisewell_logo_transparent.png" alt="Wisewell">
+      <div class="logo-divider"></div>
+      <img src="assets/oasis_logo_clean.png" alt="Oasis by ADNOC">
+    </div>
+    <div class="health-grid">
+      <div>
+        <div class="tag reveal">The New Reality</div>
+        <h2 class="health-headline" style="transition-delay:.1s">
+          <span class="hw" style="--i:0">Plastic</span> <span class="hw" style="--i:1">Bottles</span> <span class="hw" style="--i:2">Are</span><br>
+          <span class="hw accent" style="--i:3">Unhealthy</span> <span class="hw" style="--i:4">&amp;</span> <span class="hw accent" style="--i:5">Unsustainable</span>
+        </h2>
+        <p class="lead reveal" style="transition-delay:.2s">Plastic ingestion affects human health on multiple levels — from heart and cellular damage to neurological and reproductive harm.</p>
+        <div class="health-stats" style="margin-top:28px">
+          <div class="health-stat reveal" style="transition-delay:.3s">
+            <div class="counter-value" data-target="240000" data-suffix="" data-separator=",">0</div>
+            <div class="counter-label">Nano-plastics found in 1 litre of plastic bottled water<br><span style="font-size:.75rem;color:var(--muted);opacity:.7">Jan. 2024</span></div>
+          </div>
+          <div class="health-stat reveal" style="transition-delay:.45s">
+            <div class="counter-value text-gold" data-target="5" data-suffix=" Billion+" style="font-size:clamp(2.6rem,5vw,4.2rem)">0</div>
+            <div class="counter-label">Single-use plastic water bottles discarded into landfills annually</div>
+          </div>
+        </div>
+      </div>
+      <div class="reveal-right plastic-bottle-wrap" style="transition-delay:.35s;position:relative;min-height:600px">
+        <div class="plastic-bottle-inner" style="position:absolute;inset:-40px;overflow:hidden;border-radius:24px">
+          <img src="assets/plastic_bottle_car.jpg" alt="Plastic bottle exposed to sun in car" style="width:115%;height:115%;object-fit:cover;object-position:center 30%;filter:brightness(.5) saturate(.35) contrast(1.1) sepia(.1);opacity:.85">
+          <div style="position:absolute;inset:0;background:linear-gradient(160deg,rgba(0,102,178,.08) 0%,rgba(6,9,18,.35) 50%,rgba(10,14,26,.65) 100%)"></div>
+          <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 45% 35%,transparent 30%,rgba(6,9,18,.45) 85%)"></div>
+          <!-- Film grain overlay -->
+          <div style="position:absolute;inset:0;opacity:.08;background-image:url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22><filter id=%22n%22><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.85%22 numOctaves=%224%22 stitchTiles=%22stitch%22/></filter><rect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23n)%22 opacity=%220.5%22/></svg>');mix-blend-mode:overlay"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== SECTION 3: INTRODUCING WISEWELL ====== -->
+<section id="wisewell-intro">
+  <div class="glow-accent" style="bottom:-20%;left:-10%"></div>
+  <div class="section-inner">
+    <div class="intro-layout">
+      <div class="intro-center">
+        <div class="section-logos reveal">
+          <img src="assets/wisewell_logo_transparent.png" alt="Wisewell">
+          <div class="logo-divider"></div>
+          <img src="assets/oasis_logo_clean.png" alt="Oasis by ADNOC">
+        </div>
+        <div class="tag reveal">The Solution</div>
+        <h2 class="reveal" style="transition-delay:.1s">Introducing <span class="text-gradient">Wisewell</span></h2>
+        <p class="lead reveal" style="transition-delay:.2s">The only <strong style="color:var(--white)">fully integrated water technology company</strong> founded and headquartered in the UAE — designing, manufacturing, distributing and operating a fleet of data-enabled water purification systems.</p>
+        <div class="intro-features-block">
+          <div class="intro-feat" data-feat-delay="400">
+            <h4>Full Spectrum Filtration</h4>
+            <p>Removes all harmful particles and remineralizes input water to deliver pure, tasty drinking water</p>
+          </div>
+          <div class="intro-feat" data-feat-delay="700">
+            <h4>IoT Connected</h4>
+            <p>Real-time data, filter health monitoring, and water quality alerts via the Wisewell app</p>
+          </div>
+          <div class="intro-feat" data-feat-delay="1000">
+            <h4>Sustainability First</h4>
+            <p>Wisewell has diverted over <strong>17 million</strong> 500ml single-use plastic water bottles from entering landfills. The impact is tracked and reported in real time through our connected systems.</p>
+          </div>
+          <div class="intro-feat" data-feat-delay="1300">
+            <h4>UAE Solution <span class="eco-flag-wrap"><span class="eco-flag" id="introFlag">🇦🇪</span></span></h4>
+            <p>Wisewell is a <strong>UAE company</strong> and will build all <strong>ADNOC Oasis</strong> filling stations in the Emirates</p>
+          </div>
+        </div>
+      </div>
+      <div class="intro-video-side reveal-right" style="transition-delay:.2s">
+        <video autoplay muted loop playsinline>
+          <source src="assets/furniture_intro_trimmed.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+    <!-- Future 100 — centered bottom -->
+    <div class="future100-wrap" style="position:relative;z-index:2">
+      <div class="future100-inner">
+        <img src="assets/future100_badge_full.jpg" alt="UAE Future 100">
+        <p>Wisewell has been recognized by <strong style="color:var(--white);font-weight:700">Future 100</strong> as one of the companies that is <span style="color:var(--accent);font-weight:700">reshaping the UAE economy</span>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== SECTION 4: ECOSYSTEM (PATH + Wisewell) ====== -->
+<section id="ecosystem">
+  <div class="glow-blue" style="top:10%;left:-10%"></div>
+  <div class="glow-blue" style="bottom:5%;right:-8%;opacity:.25"></div>
+  <div class="section-inner">
+    <div class="section-logos reveal">
+      <img src="assets/wisewell_logo_transparent.png" alt="Wisewell">
+      <div class="logo-divider"></div>
+      <img src="assets/oasis_logo_clean.png" alt="Oasis by ADNOC">
+    </div>
+    <div class="tag reveal">Complete Refill Ecosystem</div>
+    <h2 class="reveal" style="transition-delay:.1s">From Water Source <span class="text-accent">to Bottle</span></h2>
+
+    <div class="eco-grid reveal" style="transition-delay:.15s">
+
+      <!-- ======= LEFT: PATH — two bottles splash composition ======= -->
+      <div class="eco-panel eco-path-panel">
+        <div class="eco-bottles-splash" id="ecoBottlesSplash">
+          <img class="bottle bottle-blue" src="https://drinkpathwater.com/cdn/shop/files/sparkling-20oz-aluminum-water-bottle_ad5b1dea-7cc0-4f0e-8c37-26250e2e5c71.png" alt="PATH Sparkling" crossorigin="anonymous">
+          <img class="bottle bottle-black" src="https://drinkpathwater.com/cdn/shop/files/alkaline-20oz-aluminum-water-bottle_d4e3879d-4493-4586-a336-d22f60d16438.png" alt="PATH Alkaline" crossorigin="anonymous">
+        </div>
+        <div class="eco-panel-bg"></div>
+        <div class="eco-panel-content" style="align-items:flex-start;text-align:left">
+          <div style="height:100px;display:flex;align-items:center"><img class="eco-panel-logo" id="ecoPathLogo" src="assets/path_logo_white.svg" alt="PATH"></div>
+          <div class="eco-panel-tagline" id="ecoPathTag">Not just <span>bottled water.</span></div>
+
+          <div class="eco-box-block" id="ecoPathBoxes" style="align-self:stretch">
+            <div class="eco-box from-left" data-eco-delay="200">
+              <h4>Fastest Growing</h4>
+              <p>The <strong>fastest growing sustainable bottled water</strong> in the USA — <em>leading the shift</em> away from single-use plastic.</p>
+            </div>
+            <div class="eco-box from-left" data-eco-delay="500">
+              <h4>Major Partnerships</h4>
+              <p>Exclusive water of the <strong>NBA</strong>, in over <span class="big-stat">120,000</span> hotel rooms, and <strong>distributed in over 65,000 retail outlets in USA</strong>.</p>
+            </div>
+            <div class="eco-box from-left" data-eco-delay="800" id="ecoMadeBox">
+              <h4>Made in Abu Dhabi <span class="eco-flag-wrap"><span class="eco-flag" id="ecoFlag">🇦🇪</span></span></h4>
+              <p>All bottles for the <span class="gold">ADNOC Oasis Program</span> — <strong>manufactured in Abu Dhabi</strong>.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ======= RIGHT: Wisewell — video background ======= -->
+      <div class="eco-panel eco-ww-panel">
+        <div class="eco-panel-bg">
+          <video autoplay muted loop playsinline src="assets/flat_filling.mp4"></video>
+        </div>
+        <div class="eco-panel-content" style="align-items:flex-end;text-align:right">
+          <div style="height:100px;display:flex;align-items:center;justify-content:flex-end"><img class="eco-panel-logo" id="ecoWwLogo" src="assets/wisewell_logo_full_transparent.png" alt="Wisewell"></div>
+          <div class="eco-panel-tagline" id="ecoWwTag">Not just <span>filtered water.</span></div>
+
+          <div class="eco-box-block" id="ecoWwBoxes" style="align-self:stretch">
+            <div class="eco-box from-right" data-eco-delay="300">
+              <h4>Full Spectrum Filtration</h4>
+              <p>All-natural mineral filter <strong>recreates nature's process</strong> of spring water. Adds <em>essential minerals</em> for flavor and texture rivaling <strong>leading global brands</strong>.</p>
+            </div>
+            <div class="eco-box from-right" data-eco-delay="600">
+              <h4>Water Sommelier</h4>
+              <p>In-house Water Sommelier <strong>Christina Li</strong> — one of only <span class="big-stat" style="color:var(--gold)">250</span> on the globe — <em>perfected our water</em>.</p>
+            </div>
+            <div class="eco-box from-right" data-eco-delay="900">
+              <h4>IoT Connected</h4>
+              <p>Internal sensors <strong>track water in real time</strong> ensuring <em>water quality and filters</em> are always optimized.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ====== SECTION 5: REFILL EXPERIENCE (Lady at Store) ====== -->
+<section id="refill-experience">
+  <div class="refill-bg">
+    <img src="assets/adnoc_woman_refill.jpg" alt="Customer refilling at ADNOC Oasis">
+  </div>
+  <div class="refill-content">
+    <div class="section-logos reveal">
+      <img src="assets/wisewell_logo_transparent.png" alt="Wisewell">
+      <div class="logo-divider"></div>
+      <img src="assets/oasis_logo_clean.png" alt="Oasis by ADNOC">
+    </div>
+    <div class="tag reveal">The Experience</div>
+    <h2 class="reveal" style="transition-delay:.1s">Refill. <span class="text-accent">Reuse.</span> Repeat.</h2>
+    <p class="big-quote reveal" style="transition-delay:.2s">A seamless hydration experience at every ADNOC Oasis store — pure, refreshing water at the touch of a button.</p>
+    <p class="word-reveal" id="refillWords" style="font-size:clamp(1.3rem,2.2vw,1.7rem);color:var(--white);line-height:1.55;max-width:620px;font-weight:600;letter-spacing:-.01em;margin-top:16px">Customers simply <span class="wr-accent">scan</span>, fill their branded <span class="wr-accent">ADNOC bottle</span>, and go. It's <span class="wr-accent">fast</span>, <span class="wr-accent">sustainable</span>, and already integrated into the <span class="wr-accent">ADNOC Oasis</span> experience.</p>
+    <div class="refill-stats reveal" style="transition-delay:.4s">
+      <div class="refill-stat">
+        <div class="counter-value" data-target="380" data-suffix="+" style="font-size:2.4rem">0</div>
+        <div class="counter-label">Convenience Stores<br>Across the UAE</div>
+      </div>
+      <div class="refill-stat">
+        <div class="counter-value" data-target="2.6" data-suffix="M+" data-decimals="1" style="color:var(--gold);font-size:2.4rem">0</div>
+        <div class="counter-label">ADNOC Rewards<br>Members</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== SECTION 5B: CUSTOMER JOURNEY ====== -->
+<section id="customer-journey">
+  <div class="glow-blue" style="top:20%;right:-8%;opacity:.2"></div>
+  <div class="section-inner">
+    <div class="section-logos reveal">
+      <img src="assets/wisewell_logo_transparent.png" alt="Wisewell">
+      <div class="logo-divider"></div>
+      <img src="assets/oasis_logo_clean.png" alt="Oasis by ADNOC">
+    </div>
+    <div class="tag reveal">Proposed Customer Experience</div>
+    <h2 class="reveal" style="transition-delay:.1s">Simple. Repeatable. <span class="text-accent">Built for ADNOC.</span></h2>
+    <p class="reveal" style="font-size:clamp(1rem,1.4vw,1.15rem);color:var(--muted);max-width:700px;transition-delay:.15s">Built around existing ADNOC customer behavior — from app to bottle to refill station.</p>
+
+    <div class="journey-steps">
+
+      <!-- STEP 1: Purchase -->
+      <div class="journey-step" id="journeyStep1">
+        <div class="journey-step-num">1</div>
+        <div class="journey-step-img">
+          <img src="assets/journey_phone.png" alt="ADNOC Distribution App">
+        </div>
+        <div class="journey-step-body">
+          <h3>Purchase</h3>
+          <p>Customers can purchase their <strong>1-month, 3-month or 12-month</strong> water plans in-store or through the <strong>ADNOC Distribution App</strong>.</p>
+        </div>
+        <div class="journey-arrow">▶</div>
+      </div>
+
+      <!-- STEP 2: Bottle Collection -->
+      <div class="journey-step" id="journeyStep2">
+        <div class="journey-step-num">2</div>
+        <div class="journey-step-img journey-bottles-img">
+          <img src="assets/journey_bottles_trio.png" alt="Bottle Collection — Yas Marina Circuit, Wisewell, UAE Edition">
+        </div>
+        <div class="journey-step-body">
+          <h3>Bottle <span class="text-accent">Collection</span></h3>
+          <p>With each purchase, customers get a <strong>sleek, branded, reusable aluminum bottle</strong>. Designs can be refreshed every quarter to boost <strong>customer engagement</strong>.</p>
+        </div>
+        <div class="journey-arrow">▶</div>
+      </div>
+
+      <!-- STEP 3: Refuel & Refill -->
+      <div class="journey-step" id="journeyStep3">
+        <div class="journey-step-num">3</div>
+        <div class="journey-step-img store-img">
+          <img src="assets/adnoc_woman_refill.jpg" alt="Refilling at ADNOC Oasis">
+        </div>
+        <div class="journey-step-body">
+          <h3>Refuel <span class="text-accent">&amp; Refill</span></h3>
+          <p>Using their branded aluminum bottles, clients can then access <strong>unlimited refills</strong> at all eligible <strong>ADNOC stations</strong>.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <p class="journey-note reveal" style="transition-delay:.3s">*Bottle designs are for illustrative purposes and are not finalized. **For customers on the 12-month plan, replacement bottles will be made available every quarter.</p>
+  </div>
+</section>
+
+<!-- ====== SECTION: THE OPPORTUNITY ====== -->
+<section id="opportunity">
+  <div class="glow-accent" style="top:20%;right:-15%"></div>
+  <div class="section-inner">
+    <div class="section-logos reveal">
+      <img src="assets/wisewell_logo_transparent.png" alt="Wisewell">
+      <div class="logo-divider"></div>
+      <img src="assets/oasis_logo_clean.png" alt="Oasis by ADNOC">
+    </div>
+    <div class="tag reveal">The Opportunity</div>
+    <h2 class="reveal" style="transition-delay:.1s">Turning Everyday Fuel Stops Into<br><span class="text-accent">Repeat Hydration Moments</span></h2>
+    <div class="opp-grid">
+      <div class="opp-left reveal" style="transition-delay:.15s">
+        <div class="opp-left-bg">
+          <img src="assets/oasis_store_bg.jpg" alt="ADNOC Oasis Store">
+        </div>
+        <div class="opp-cards">
+          <div class="opp-card reveal" style="transition-delay:.2s">
+            <h4><span class="opp-label">Superior</span> Health &amp; User Experience</h4>
+            <p><strong>Premium mineralized</strong> and freshly purified drinking water, free from plastics, available exactly where customers already stop.</p>
+          </div>
+          <div class="opp-card reveal" style="transition-delay:.3s">
+            <h4>Amplified <span class="opp-label">Brand Visibility</span></h4>
+            <p>ADNOC-branded bottles and refill stations create a <strong>visible, everyday sustainability</strong> touchpoint across the network.</p>
+          </div>
+          <div class="opp-card reveal" style="transition-delay:.4s">
+            <h4>Retail <span class="opp-label-gold">Conversion</span> Engine</h4>
+            <p>Refill visits increase <strong>dwell time</strong> and drive incremental spend in Oasis stores. Refills naturally pair with snacks, coffee, and essentials.</p>
+          </div>
+          <div class="opp-card reveal" style="transition-delay:.5s">
+            <h4>Loyalty &amp; <span class="opp-label">App Stickiness</span></h4>
+            <p>App-based plans turn hydration into a <strong>recurring habit</strong>, strengthening rewards usage and repeat station visits.</p>
+          </div>
+        </div>
+      </div>
+      <div class="opp-right reveal-right" style="transition-delay:.35s">
+        <img src="assets/purifier_green_bottle.png" alt="Wisewell Purifier with National Day Bottle">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== SECTION: COMMERCIALS ====== -->
+<section id="commercials">
+  <div class="section-inner">
+    <div class="section-logos reveal">
+      <img src="assets/wisewell_logo_transparent.png" alt="Wisewell">
+      <div class="logo-divider"></div>
+      <img src="assets/oasis_logo_clean.png" alt="Oasis by ADNOC">
+    </div>
+    <div class="tag reveal">Preliminary Commercials</div>
+    <h2 class="reveal" style="transition-delay:.1s">Pricing That Rewards <span class="text-accent">Commitment</span></h2>
+    <p class="lead reveal" style="transition-delay:.15s">Straightforward pricing that rewards longer commitment and frequent use.</p>
+
+    <table class="pricing-table reveal" style="transition-delay:.25s">
+      <thead>
+        <tr>
+          <th></th>
+          <th>1-Month Package</th>
+          <th>3-Month Package</th>
+          <th class="highlight-col">12-Month Package</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Upfront</td>
+          <td>AED 20</td>
+          <td>AED 45</td>
+          <td class="highlight-col" style="font-weight:700;color:var(--accent)">AED 132</td>
+        </tr>
+        <tr>
+          <td>Monthly Discount</td>
+          <td>-</td>
+          <td class="discount">25%</td>
+          <td class="highlight-col discount">45%</td>
+        </tr>
+        <tr>
+          <td>Includes</td>
+          <td><strong style="color:var(--white)">1 Bottle</strong> with <span style="color:var(--accent);font-weight:700">Unlimited Refills</span></td>
+          <td><strong style="color:var(--white)">1 Bottle</strong> with <span style="color:var(--accent);font-weight:700">Unlimited Refills</span></td>
+          <td class="highlight-col"><strong style="color:var(--white)">4 Bottles</strong> <span style="font-size:.85em;opacity:.85">(1 Per Quarter)</span> and <span style="color:var(--accent);font-weight:700">Unlimited Refills</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="revenue-callout reveal" style="transition-delay:.4s">
+      <div class="big-number">Over <span data-target="3000000" data-suffix="" data-decimals="0" data-separator="," class="counter-value" style="font-size:inherit;display:inline">0</span> AED</div>
+      <p>Estimated ADNOC Distribution revenue from profit share in year one — across 384 operational locations*</p>
+      <p style="font-size:.75rem;margin-top:10px;opacity:.6">*Based on estimated steady-state volumes and revenue share agreement.</p>
+    </div>
+
+    <div class="partnership-terms reveal" style="transition-delay:.55s">
+      <h3>The Partnership — <span class="term-highlight">Zero Cost</span> to ADNOC Distribution</h3>
+      <p>Wisewell will deploy, install, and maintain high-speed water refill stations across all ADNOC Oasis locations as part of a <strong>nationwide rollout</strong>. Each location will feature a branded product display with bottles of ADNOC Distribution's choosing, fully integrated into your <strong>app and point-of-sale systems</strong>. All deployment and ongoing maintenance costs are covered by Wisewell — at <span class="term-highlight">zero cost</span> to ADNOC Distribution. In exchange for in-store placement and digital presence, Wisewell will provide a <strong>25% revenue share</strong> to ADNOC Distribution.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ====== SECTION 6: WHY ADNOC ====== -->
+<section id="why-adnoc">
+  <div class="adnoc-bg-video">
+    <video autoplay muted loop playsinline id="adnocBgVideo">
+      <source src="assets/adnoc_station_video.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="section-inner">
+    <div class="section-logos reveal">
+      <img src="assets/wisewell_logo_transparent.png" alt="Wisewell">
+      <div class="logo-divider"></div>
+      <img src="assets/oasis_logo_clean.png" alt="Oasis by ADNOC">
+    </div>
+    <div class="tag reveal">Why ADNOC Distribution</div>
+    <h2 class="reveal" style="transition-delay:.1s">Built for <span class="text-accent">Scale</span></h2>
+    <div class="adnoc-grid" style="margin-top:20px">
+      <div>
+        <div class="category-label reveal" style="transition-delay:.15s;margin-top:0">National Retail Footprint</div>
+        <div class="adnoc-stats-list">
+          <div class="adnoc-stat-card reveal" style="transition-delay:.2s">
+            <div class="stat-number" data-target="380" data-suffix="+">0</div>
+            <div class="stat-text">Convenience stores across the UAE</div>
+          </div>
+          <div class="adnoc-stat-card reveal" style="transition-delay:.26s">
+            <div class="stat-number" data-target="2.6" data-suffix="M+" data-decimals="1">0</div>
+            <div class="stat-text">ADNOC Rewards Members</div>
+          </div>
+          <div class="adnoc-stat-card reveal" style="transition-delay:.32s">
+            <div class="stat-number">~130</div>
+            <div class="stat-text">ADNOC Rewards Partners</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="category-label reveal" style="transition-delay:.35s;margin-top:0">Digital-First Customer Experience</div>
+        <div class="adnoc-stats-list">
+          <div class="adnoc-stat-card reveal" style="transition-delay:.4s">
+            <div class="stat-number">20+</div>
+            <div class="stat-text">AI Initiatives</div>
+          </div>
+          <div class="adnoc-stat-card reveal" style="transition-delay:.46s">
+            <div class="stat-number">400+</div>
+            <div class="stat-text">Available EV Stations</div>
+          </div>
+          <div class="adnoc-stat-card reveal" style="transition-delay:.52s">
+            <div class="stat-number">28%</div>
+            <div class="stat-text">Convenience Store Conversion Rate</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="adnoc-sustainability-row">
+      <div class="category-label reveal" style="transition-delay:.55s;text-align:center;margin-top:0">Embedded Sustainability</div>
+      <div class="adnoc-sustainability-cards">
+        <div class="adnoc-stat-card reveal" style="transition-delay:.6s">
+          <div class="stat-number">2045</div>
+          <div class="stat-text">Net Zero Target</div>
+        </div>
+        <div class="adnoc-stat-card reveal" style="transition-delay:.65s">
+          <div class="stat-number" data-target="5.8" data-suffix="M+" data-decimals="1">0</div>
+          <div class="stat-text">Items recycled via on-site Reverse Vending Machines</div>
+        </div>
+        <div class="adnoc-stat-card reveal" style="transition-delay:.7s">
+          <div class="stat-number">80%</div>
+          <div class="stat-text">Water Recycle Rate in Car Wash Operations</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== SECTION 9: DIGITAL INTEGRATION ====== -->
+<section id="digital">
+  <div class="glow-blue" style="bottom:0;left:-15%"></div>
+  <div class="section-inner">
+    <div class="section-logos reveal">
+      <img src="assets/wisewell_logo_transparent.png" alt="Wisewell">
+      <div class="logo-divider"></div>
+      <img src="assets/oasis_logo_clean.png" alt="Oasis by ADNOC">
+    </div>
+    <div class="tag reveal">Seamless Integration</div>
+    <h2 class="reveal" style="transition-delay:.1s">Plugs Into ADNOC's <span class="text-accent">Digital Infrastructure</span></h2>
+    <p class="lead reveal" style="transition-delay:.15s">Wisewell's smart purification stations seamlessly plug into ADNOC Distribution's existing digital infrastructure to drive recurring revenue and ESG impact.</p>
+
+    <div class="digital-grid">
+      <div class="digital-left-panel">
+        <div class="digital-phone-bg">
+          <img src="assets/adnoc_app_phone.png" alt="ADNOC Distribution App">
+        </div>
+        <div class="digital-cards">
+          <div class="digital-card reveal" style="transition-delay:.2s">
+            <h4>ADNOC Wallet &amp; MobilePay</h4>
+            <p><strong>Frictionless transactions</strong> using the ADNOC Wallet. <span style="color:var(--accent);font-weight:700">QR Code</span> integration — users scan via the ADNOC Dist. App.</p>
+          </div>
+          <div class="digital-card reveal" style="transition-delay:.3s">
+            <h4>ADNOC Rewards: "Pay with Points"</h4>
+            <p>Allow <strong style="color:var(--accent)">750,000+</strong> ADNOC Rewards members to redeem points for refills. Turn hydration streaks into <span style="color:var(--gold);font-weight:700">Etihad Miles</span> or Etisalat Smiles.</p>
+          </div>
+          <div class="digital-card reveal" style="transition-delay:.4s">
+            <h4>Sustainability Dashboard</h4>
+            <p>Real-time tracker: <strong style="color:var(--accent)">"Bottles Saved"</strong> and <strong style="color:var(--gold)">"CO2 Abated"</strong> per user. Automated data feed for ADNOC's annual <strong>ESG Report</strong>.</p>
+          </div>
+          <div class="digital-card reveal" style="transition-delay:.5s">
+            <h4>Smart Logistics &amp; Predictive Maintenance</h4>
+            <p><strong>Real-time</strong> filter health and water quality alerts sent to the <span style="color:var(--accent);font-weight:700">ADNOC operations dashboard</span>. Automated alerts for suboptimal quality.</p>
+          </div>
+        </div>
+      </div>
+      <div class="digital-right-video reveal-right" style="transition-delay:.2s">
+        <video autoplay muted loop playsinline>
+          <source src="assets/bubble_tech.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== SECTION 11: IMPACT & CTA ====== -->
+<section id="impact">
+  <div class="glow-accent" style="top:-10%;right:10%"></div>
+  <div class="section-inner">
+    <div class="section-logos reveal">
+      <img src="assets/wisewell_logo_transparent.png" alt="Wisewell">
+      <div class="logo-divider"></div>
+      <img src="assets/oasis_logo_clean.png" alt="Oasis by ADNOC">
+    </div>
+    <div class="tag reveal">Impact</div>
+    <h2 class="reveal" style="transition-delay:.1s">Making a <span class="text-gradient">Measurable Difference</span></h2>
+
+    <div class="impact-grid" style="margin-top:24px">
+      <div class="impact-col">
+        <div class="impact-card reveal" style="transition-delay:.2s">
+          <h4>Social — Sip-For-Sip Initiative</h4>
+          <div class="counter-value text-accent" data-target="26068871" data-suffix="" data-separator=",">0</div>
+          <p>Clean water servings provided by Wisewell users to date for individuals who lack access</p>
+        </div>
+        <div class="impact-card reveal" style="transition-delay:.35s">
+          <h4>Sustainable Impact — Plastic Avoided</h4>
+          <div class="counter-value text-gold" data-target="17379247" data-suffix="" data-separator=",">0</div>
+          <p>The number of 500ml single use plastic bottles that Wisewell users have diverted away from landfills and oceans to date</p>
+        </div>
+      </div>
+      <div class="impact-col">
+        <div class="impact-card reveal-right" style="transition-delay:.3s">
+          <h4>Social — ADNOC Distribution x Wisewell</h4>
+          <div class="counter-value text-accent" data-target="84000000" data-suffix="" data-separator=",">0</div>
+          <p>Projected servings of clean water provided to those who lack access in one year of steady state operations</p>
+        </div>
+        <div class="impact-card reveal-right" style="transition-delay:.45s">
+          <h4>Sustainable Impact — ADNOC Distribution x Wisewell</h4>
+          <div class="counter-value text-gold" data-target="56000000" data-suffix="" data-separator=",">0</div>
+          <p>Projected 500ml single use plastic bottles diverted away from landfills and oceans in one year of steady state operations</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Handhal Bottles -->
+    <div class="handhal-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:stretch;margin-top:28px">
+      <div class="reveal handhal-card" style="transition-delay:.5s;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:24px 22px;background:rgba(10,14,26,.8);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:2px solid rgba(0,163,224,0.35);border-radius:14px;box-shadow:0 14px 44px rgba(0,0,0,.4);text-align:center">
+        <img src="assets/handhal_logo.png" alt="Handhal Logo" style="width:90%;max-width:400px;display:block;margin:0 auto 20px;object-fit:contain;border-radius:12px">
+        <p style="font-size:.82rem;color:var(--light);line-height:1.7;text-align:center;margin:0"><span style="font-size:.95rem;font-weight:800;color:var(--white);display:block;margin-bottom:8px;letter-spacing:.5px">Wisewell x <span style="color:var(--accent)">Handhal</span></span>Pursuing a collaboration with the <strong style="color:var(--accent)">Handhal SME Resilience Program</strong> to sell <span style="color:var(--gold);font-weight:700">UAE Flag co-branded refillable bottles</span>.<br><span style="display:inline-block;margin-top:6px">All profits support <strong style="color:var(--white)">UAE SME businesses</strong> during these challenging times.</span><br><span style="display:inline-block;margin-top:6px">We would be honored to launch this with <strong style="color:var(--accent)">ADNOC Distribution</strong> to start our partnership.</span></p>
+      </div>
+      <div class="reveal-right handhal-img-card" style="transition-delay:.7s;border-radius:14px;overflow:hidden;box-shadow:0 14px 44px rgba(0,0,0,.4);border:2px solid rgba(0,163,224,0.35);position:relative;background:rgba(10,14,26,.85)">
+        <img src="assets/handhal_bottles.png" alt="Wisewell x Handhal UAE Flag Bottles" style="width:100%;height:100%;display:block;object-fit:contain;object-position:center center;opacity:.8;filter:contrast(1.08) saturate(1.1) brightness(.85);padding:10px">
+        <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,14,26,.3) 0%,transparent 30%,transparent 70%,rgba(10,14,26,.3) 100%);pointer-events:none"></div>
+      </div>
+    </div>
+
+    <!-- Video accent -->
+    <div class="reveal final-cta-wrap" style="transition-delay:.7s;margin-top:28px;border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.4);border:1px solid rgba(255,255,255,0.08);position:relative">
+      <video autoplay muted loop playsinline style="width:100%;display:block;filter:brightness(.4) saturate(.7)">
+        <source src="assets/furniture_clip_clean.mp4" type="video/mp4">
+      </video>
+      <div class="cta-section final-cta-content" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0;padding:40px;background:transparent">
+        <div class="rfc-words">
+          <span class="rfc-word" style="order:1">REFUEL.</span>
+          <span class="rfc-word" style="order:3">RECHARGE.</span>
+          <span class="rfc-word rfc-hero" style="order:2">REFILL.</span>
+        </div>
+        <h2>Let's Build the <span class="text-accent">Future of Hydration</span></h2>
+        <p>Together, Wisewell and ADNOC Distribution can redefine how the UAE drinks water.</p>
+        <a href="mailto:sami@wisewell.com" class="cta-btn">
+          Get in Touch
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <p style="margin-top:20px;font-size:.85rem;color:var(--muted)">sami@wisewell.com</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>&copy; 2026 Wisewell &times; ADNOC Distribution. Confidential.</p>
+</footer>
+
+<script>
+// === NAV SCROLL (removed) ===
+
+// === SCROLL REVEAL ===
+const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale, .health-headline, .future100-wrap');
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+revealEls.forEach(el => revealObserver.observe(el));
+
+// === ADNOC BG VIDEO — start 2s in ===
+const adnocBgVideo = document.getElementById('adnocBgVideo');
+if (adnocBgVideo) { adnocBgVideo.addEventListener('loadedmetadata', () => { adnocBgVideo.currentTime = 3.5; }); }
+
+// === INTRO FEATURE BOXES — independent staggered entry ===
+document.querySelectorAll('.intro-features-block').forEach(block => {
+  const boxes = block.querySelectorAll('.intro-feat[data-feat-delay]');
+  if (!boxes.length) return;
+  const featObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        boxes.forEach(box => {
+          const delay = parseInt(box.dataset.featDelay) || 0;
+          setTimeout(() => {
+            box.style.transition = 'opacity .7s cubic-bezier(.25,.46,.45,.94), transform .7s cubic-bezier(.25,.46,.45,.94)';
+            box.classList.add('visible');
+          }, delay);
+        });
+        // Trigger any flag inside this block
+        const flag = block.querySelector('.eco-flag');
+        if (flag) setTimeout(() => flag.classList.add('arrived'), 2000);
+        featObserver.unobserve(block);
+      }
+    });
+  }, { threshold: 0.25 });
+  featObserver.observe(block);
+});
+
+// === ECOSYSTEM — Apple-style reveal ===
+const ecoSection = document.getElementById('ecosystem');
+if (ecoSection) {
+  const ecoObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        // Logos — slow dramatic entrance first
+        const pathLogo = document.getElementById('ecoPathLogo');
+        const wwLogo = document.getElementById('ecoWwLogo');
+        if (pathLogo) setTimeout(() => pathLogo.classList.add('show'), 200);
+        if (wwLogo) setTimeout(() => wwLogo.classList.add('show'), 600);
+        // Bottles splash entrance — after logos start appearing
+        const bottlesSplash = document.getElementById('ecoBottlesSplash');
+        if (bottlesSplash) setTimeout(() => bottlesSplash.classList.add('show'), 900);
+        // Taglines — after logos fully resolved
+        const pathTag = document.getElementById('ecoPathTag');
+        const wwTag = document.getElementById('ecoWwTag');
+        if (pathTag) setTimeout(() => pathTag.classList.add('show'), 1800);
+        if (wwTag) setTimeout(() => wwTag.classList.add('show'), 1800);
+        // LEFT boxes from left one at a time
+        document.querySelectorAll('#ecoPathBoxes .eco-box').forEach(box => {
+          const d = parseInt(box.dataset.ecoDelay) || 0;
+          setTimeout(() => {
+            box.classList.add('visible');
+            setTimeout(() => box.classList.add('pulse'), 900);
+          }, d + 400);
+        });
+        // RIGHT boxes from right one at a time
+        document.querySelectorAll('#ecoWwBoxes .eco-box').forEach(box => {
+          const d = parseInt(box.dataset.ecoDelay) || 0;
+          setTimeout(() => {
+            box.classList.add('visible');
+            setTimeout(() => box.classList.add('pulse'), 900);
+          }, d + 400);
+        });
+        // UAE flag drops + waves
+        const flag = document.getElementById('ecoFlag');
+        if (flag) setTimeout(() => flag.classList.add('arrived'), 2200);
+        ecoObs.disconnect();
+      }
+    });
+  }, { threshold: 0.15 });
+  ecoObs.observe(ecoSection);
+}
+
+// === CUSTOMER JOURNEY — step-by-step reveal ===
+const journeySection = document.getElementById('customer-journey');
+if (journeySection) {
+  const journeyObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const step1 = document.getElementById('journeyStep1');
+        const step2 = document.getElementById('journeyStep2');
+        const step3 = document.getElementById('journeyStep3');
+        if (step1) setTimeout(() => step1.classList.add('visible'), 400);
+        if (step2) setTimeout(() => step2.classList.add('visible'), 1400);
+        if (step3) setTimeout(() => step3.classList.add('visible'), 2400);
+        journeyObs.disconnect();
+      }
+    });
+  }, { threshold: 0.15 });
+  journeyObs.observe(journeySection);
+}
+
+// === ANIMATED COUNTERS ===
+function animateCounter(el) {
+  const target = parseFloat(el.dataset.target);
+  if (!target && target !== 0) return;
+  const suffix = el.dataset.suffix || '';
+  const decimals = parseInt(el.dataset.decimals) || 0;
+  const separator = el.dataset.separator || '';
+  const duration = 2200;
+  const startTime = performance.now();
+
+  function update(currentTime) {
+    const elapsed = currentTime - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    let current = eased * target;
+
+    if (decimals > 0) {
+      el.textContent = current.toFixed(decimals) + suffix;
+    } else {
+      let num = Math.round(current);
+      if (separator) {
+        num = num.toLocaleString();
+      }
+      el.textContent = num + suffix;
+    }
+
+    if (progress < 1) {
+      requestAnimationFrame(update);
+    }
+  }
+  requestAnimationFrame(update);
+}
+
+const counterEls = document.querySelectorAll('[data-target]');
+const counterObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting && !entry.target.dataset.animated) {
+      entry.target.dataset.animated = 'true';
+      animateCounter(entry.target);
+    }
+  });
+}, { threshold: 0.3 });
+counterEls.forEach(el => counterObserver.observe(el));
+
+// === PURIFIER ENTRANCE (triggered on scroll) ===
+const purifierWrap = document.querySelector('.purifier-entrance');
+if (purifierWrap) {
+  const purifierObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.2 });
+  purifierObs.observe(purifierWrap);
+}
+
+// === WORD-BY-WORD REVEAL ===
+const wrEl = document.getElementById('refillWords');
+if (wrEl) {
+  // Wrap every text node word in a span, preserving existing accent spans
+  const frag = document.createDocumentFragment();
+  wrEl.childNodes.forEach(node => {
+    if (node.nodeType === 3) {
+      node.textContent.split(/(\s+)/).forEach(part => {
+        if (/\S/.test(part)) {
+          const s = document.createElement('span');
+          s.className = 'wr-word';
+          s.textContent = part;
+          frag.appendChild(s);
+          frag.appendChild(document.createTextNode(' '));
+        }
+      });
+    } else if (node.nodeType === 1) {
+      const wrapper = document.createElement('span');
+      wrapper.className = 'wr-word';
+      const inner = node.cloneNode(true);
+      wrapper.appendChild(inner);
+      frag.appendChild(wrapper);
+      frag.appendChild(document.createTextNode(' '));
+    }
+  });
+  wrEl.textContent = '';
+  wrEl.appendChild(frag);
+  const allWords = wrEl.querySelectorAll('.wr-word');
+  let wrStarted = false;
+  const wrObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !wrStarted) {
+        wrStarted = true;
+        allWords.forEach((w, i) => {
+          setTimeout(() => w.classList.add('show'), i * 80);
+        });
+      }
+    });
+  }, { threshold: 0.3 });
+  wrObs.observe(wrEl);
+}
+
+// === SMOOTH SCROLL FOR NAV LINKS ===
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function(e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+
+// === REFUEL / REFILL / RECHARGE — hero triggers on load, CTA triggers on scroll ===
+// Hero: activate after a brief delay so the bottle drop finishes first
+setTimeout(() => {
+  const heroRfc = document.querySelector('.rfc-words-hero');
+  if (heroRfc) heroRfc.classList.add('rfc-active');
+}, 2200);
+
+// CTA: activate when it scrolls into view
+const ctaRfc = document.querySelectorAll('.final-cta-content .rfc-words');
+if (ctaRfc.length) {
+  const rfcObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        // Reset and re-trigger by cloning
+        const el = entry.target;
+        const words = el.querySelectorAll('.rfc-word');
+        words.forEach(w => { w.style.animation = 'none'; w.offsetHeight; w.style.animation = ''; });
+        rfcObs.unobserve(el);
+      }
+    });
+  }, { threshold: 0.3 });
+  ctaRfc.forEach(el => rfcObs.observe(el));
+}
+</script>
+</body>
+</html>
