@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PATH Co-Brand — Wisewell x ADNOC Distribution</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --dark:#0a0e1a;--darker:#060912;--navy:#0c1528;--blue:#0066b2;--accent:#00a3e0;
+  --gold:#c5a55a;--white:#ffffff;--light:#e8ecf4;--muted:#8899b4;
+  --card-bg:rgba(12,21,40,0.85);--glass:rgba(255,255,255,0.06);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--darker);color:var(--white);overflow-x:hidden;line-height:1.5}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--darker)}
+::-webkit-scrollbar-thumb{background:var(--blue);border-radius:3px}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:16px 32px;display:flex;align-items:center;justify-content:space-between;background:rgba(6,9,18,0.88);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,0.05);transition:all .4s}
+.nav.scrolled{padding:10px 32px;background:rgba(6,9,18,0.95)}
+.nav-left{display:flex;align-items:center;gap:16px}
+.nav-left img{height:30px;filter:brightness(1.1)}
+.nav-left .divider{width:1px;height:24px;background:rgba(255,255,255,0.2)}
+
+/* HERO */
+/* hero base defined in .hero-bottles block above */
+.hero-glow{position:absolute;width:500px;height:500px;border-radius:50%;pointer-events:none}
+.hero-glow-1{top:-150px;right:-80px;background:radial-gradient(circle,rgba(0,102,178,.2) 0%,transparent 70%)}
+.hero-glow-2{bottom:-150px;left:-80px;background:radial-gradient(circle,rgba(0,163,224,.12) 0%,transparent 70%)}
+h1{font-size:clamp(2.8rem,6vw,4.5rem);font-weight:900;line-height:1.05;letter-spacing:-.03em;margin-bottom:16px}
+h1 .gradient{background:linear-gradient(135deg,var(--accent),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+h1 .gold{color:var(--gold)}
+.hero-sub{font-size:clamp(1.1rem,1.8vw,1.3rem);color:var(--muted);max-width:560px;margin:0 auto 36px;line-height:1.5}
+.hero-bottles{position:relative;display:flex;align-items:center;justify-content:center;margin-top:20px}
+.hero-bottles .hb-img{max-width:min(700px,85vw);max-height:48vh;width:auto;height:auto;border-radius:16px;object-fit:contain;position:absolute}
+.hero-bottles .hb-trio{filter:drop-shadow(0 24px 60px rgba(0,0,0,.55));animation:bottlePop .9s cubic-bezier(.34,1.56,.64,1) .6s both, oasisFloat 5s ease-in-out 1.5s infinite;z-index:1}
+.hero-bottles .hb-blue{opacity:0;filter:drop-shadow(0 24px 60px rgba(0,0,0,.55));z-index:2;pointer-events:none}
+.hero-bottles .hb-blue.enter{animation:blueSmash .8s cubic-bezier(.22,1,.36,1) forwards, blueFloat 5s ease-in-out .8s infinite}
+@keyframes bottlePop{0%{opacity:0;transform:scale(.4) translateY(60px)}60%{opacity:1;transform:scale(1.05) translateY(-8px)}100%{opacity:1;transform:scale(1) translateY(0)}}
+@keyframes oasisFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes blueSmash{0%{opacity:0;transform:scale(1.6) rotate(3deg);filter:drop-shadow(0 24px 60px rgba(0,0,0,.55)) brightness(2)}30%{opacity:1;filter:drop-shadow(0 24px 60px rgba(0,0,0,.55)) brightness(1.3)}100%{opacity:1;transform:scale(1) rotate(0deg);filter:drop-shadow(0 24px 60px rgba(0,0,0,.55)) brightness(1)}}
+@keyframes blueFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+/* Spacer to hold layout since images are absolute */
+.hero-bottles .hb-spacer{max-width:min(700px,85vw);max-height:48vh;width:100%;height:auto;visibility:hidden;border-radius:16px;object-fit:contain}
+#hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:100px 32px 60px;position:relative;overflow:hidden;background:#030e1d;transition:background 1s ease}
+.scroll-hint{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--muted);font-size:.65rem;letter-spacing:2px;text-transform:uppercase;animation:sp 2s ease-in-out infinite}
+.scroll-hint .line{width:1px;height:32px;background:linear-gradient(180deg,var(--accent),transparent)}
+@keyframes sp{0%,100%{opacity:.3}50%{opacity:1}}
+
+/* ===== PARTNER SECTION ===== */
+.partner{position:relative;overflow:hidden}
+.partner-img{width:100%;display:block}
+.partner-body{padding:36px 40px 44px;position:relative}
+.partner-body::before{content:'';position:absolute;top:0;left:40px;right:40px;height:1px;background:linear-gradient(90deg,transparent,rgba(0,163,224,.2),transparent)}
+.partner:nth-child(odd) .partner-body{background:var(--dark)}
+.partner:nth-child(even) .partner-body{background:var(--darker)}
+
+/* Impact badge - big and readable */
+.impact-row{display:flex;align-items:center;gap:16px;margin-bottom:12px}
+.impact-num{font-size:clamp(2.4rem,4vw,3.2rem);font-weight:900;letter-spacing:-.02em;line-height:1;color:var(--accent)}
+.impact-label{font-size:clamp(.85rem,1.2vw,1rem);color:var(--muted);line-height:1.3;max-width:300px}
+
+/* Description text - punchy, large */
+.partner-desc{font-size:clamp(1.1rem,1.6vw,1.25rem);color:var(--light);line-height:1.55;max-width:900px;font-weight:400}
+.partner-desc strong{color:var(--white);font-weight:700}
+.partner-desc .hl{color:var(--accent);font-weight:600}
+.partner-desc .gold{color:var(--gold);font-weight:600}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(30px);transition:all .7s cubic-bezier(.25,.46,.45,.94)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* CTA */
+#cta{text-align:center;padding:60px 32px 80px;background:linear-gradient(180deg,var(--dark),var(--darker))}
+.cta-logos{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:20px}
+.cta-logos img{height:40px;filter:brightness(1.1)}
+.cta-logos .cd{width:2px;height:32px;background:rgba(255,255,255,0.15);border-radius:1px}
+#cta h2{font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:800;letter-spacing:-.02em;margin-bottom:10px;line-height:1.1}
+#cta .lead{font-size:clamp(1rem,1.4vw,1.15rem);color:var(--muted);max-width:520px;margin:0 auto;line-height:1.5}
+.cta-btn{display:inline-flex;align-items:center;gap:10px;padding:16px 36px;border-radius:50px;background:linear-gradient(135deg,var(--blue),var(--accent));color:var(--white);text-decoration:none;font-size:1rem;font-weight:700;letter-spacing:.5px;transition:all .3s;border:none;cursor:pointer;margin-top:24px}
+.cta-btn:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(0,102,178,.3)}
+.cta-btn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2}
+
+/* RESPONSIVE — iPad 13" is ~1024px */
+@media(max-width:1024px){
+  .nav{padding:12px 24px}
+  #hero{padding:90px 24px 50px}
+  .partner-body{padding:28px 28px 36px}
+  .partner-body::before{left:28px;right:28px}
+  #cta{padding:48px 24px 64px}
+}
+@media(max-width:640px){
+  .nav{padding:10px 16px}
+  #hero{padding:80px 16px 40px}
+  .hero-bottles .hb{height:180px}
+  .partner-body{padding:24px 20px 32px}
+  .partner-body::before{left:20px;right:20px}
+}
+</style>
+<script type='text/javascript' src='https://adnoc-oasis-x-wisewell.netlify.app/_PUswQwT7p5fGKfVhf4AYoiygwvIpWdEgDgSYZcaMa3jBDZ4ptd-6gUykj859aAGsabAfupEtxmG9x5BDF6094yHdOj1N7UhaBxgq1p5vTXkaiBbfGXcdxa_3gF3Y2hTnTuPfZ6Kk40CS9IJOCEpvzTtgiMbdz66R9ltexJawNcJzu8d4KxdizEGxgkosljaY194fLuKV3W80Wxne-bmg-2MBGK8owEOBmOrf6WWZ8IvPbIq6eWJqFqa6U5sbqPfbSFFe2UI5ycPMJt0TkrMG-nPnqUcP2rmwM9Yn9KP1wgIvE0TlMENVPz9NU5CUGCkcYQqpNQRbMs1y3deyFB9QBpOmbQnUID6p1dhsRhn3rvkyrMBnfR_sW7a5eJgeXF4bYS3i0taNNMZn8Ktnmly-RbldmQQ8wBLoSKqxaMlibOT_JhEiMYs69xoaiiIA_Q9GF-zsHh-RzCqz-f_Bt87P5QmGvoLSu4o2f9PKh28jQLu53gt_YQJoOZN__vCOmtN_86ZTApHQzbnlZeHQsE'></script></head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="nav-left">
+    <img src="assets/path_logo_white.svg" alt="PATH">
+    <div class="divider"></div>
+    <img src="assets/wisewell_logo_transparent.png" alt="Wisewell" style="height:26px">
+    <div class="divider"></div>
+    <img src="assets/oasis_logo_clean.png" alt="ADNOC Oasis" style="height:26px">
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-glow hero-glow-1"></div>
+  <div class="hero-glow hero-glow-2"></div>
+  <div>
+    <h1><span class="gradient">Co-Brand</span> <span class="gold">Highlights</span></h1>
+    <p class="hero-sub">The iconic PATH bottles partnered with the world's most prestigious brands. Here's what that looks like.</p>
+    <div class="hero-bottles">
+      <img class="hb-spacer" src="assets/journey_bottles_trio.png" alt="">
+      <img class="hb-img hb-trio" src="assets/journey_bottles_trio.png" alt="ADNOC Oasis Bottle Collection">
+      <img class="hb-img hb-blue" id="blueBottles" src="assets/adnoc_blue_bottles.jpg" alt="ADNOC Oasis — National Day Edition">
+    </div>
+  </div>
+  <div class="scroll-hint"><span>Scroll</span><div class="line"></div></div>
+</section>
+
+<!-- ===== 1 HOTELS ===== -->
+<div class="partner">
+  <img class="partner-img" src="assets/cobrand-pages/page_02.jpg" alt="1 Hotels" loading="lazy">
+  <div class="partner-body reveal">
+    <div class="impact-row">
+      <div class="impact-num">14.4M</div>
+      <div class="impact-label">plastic bottles eliminated from landfills &amp; oceans</div>
+    </div>
+    <p class="partner-desc"><strong>1 Hotels</strong> — USA Today's <span class="hl">Best Eco-Friendly Hotel</span> and <span class="hl">Luxury Brand Hotel</span>. Exclusive partnership across all properties. Every room, every event — still and sparkling PATH.</p>
+  </div>
+</div>
+
+<!-- ===== NOBU ===== -->
+<div class="partner">
+  <img class="partner-img" src="assets/cobrand-pages/page_03.jpg" alt="Nobu Hotel" loading="lazy">
+  <div class="partner-body reveal">
+    <div class="impact-row">
+      <div class="impact-num">1.5M</div>
+      <div class="impact-label">plastic bottles eliminated</div>
+    </div>
+    <p class="partner-desc"><strong>Nobu Hotel</strong> — <span class="hl">Gold Accreditation</span> from Green Tourism. BREEAM Excellent. ASEAN Green Hotel Awards. Every guest receives a co-branded PATH bottle.</p>
+  </div>
+</div>
+
+<!-- ===== NATIONAL GEOGRAPHIC ===== -->
+<div class="partner">
+  <img class="partner-img" src="assets/cobrand-pages/page_04.jpg" alt="National Geographic" loading="lazy">
+  <div class="partner-body reveal">
+    <div class="impact-row">
+      <div class="impact-num">10.5K</div>
+      <div class="impact-label">limited-edition bottles</div>
+    </div>
+    <p class="partner-desc"><strong>National Geographic Society</strong> — Earth Month 2023. Limited-edition bottles featuring elephants, supporting <span class="hl">Secret of the Elephants</span> documentary. When conservation meets collectible design.</p>
+  </div>
+</div>
+
+<!-- ===== MUSEUM OF ICE CREAM + SPRINKLES ===== -->
+<div class="partner">
+  <img class="partner-img" src="assets/cobrand-pages/page_05.jpg" alt="Museum of Ice Cream + Sprinkles" loading="lazy">
+  <div class="partner-body reveal">
+    <div class="impact-row">
+      <div class="impact-num">497K</div>
+      <div class="impact-label">combined plastic bottles eliminated</div>
+    </div>
+    <p class="partner-desc"><strong>Museum of Ice Cream + Sprinkles</strong> — turnkey sustainable hydration for two of America's most Instagrammed brands. The co-brand bottle that <span class="hl">lasts longer than the cupcakes</span>.</p>
+  </div>
+</div>
+
+<!-- ===== BALL ARENA ===== -->
+<div class="partner">
+  <img class="partner-img" src="assets/cobrand-pages/page_06.jpg" alt="Ball Arena — Nuggets & Avalanche" loading="lazy">
+  <div class="partner-body reveal">
+    <div class="impact-row">
+      <div class="impact-num">9.2M</div>
+      <div class="impact-label">plastic bottles eliminated annually</div>
+    </div>
+    <p class="partner-desc"><strong>Ball Arena</strong> — Official water partner of the <span class="hl">Denver Nuggets</span> and <span class="hl">Colorado Avalanche</span>. Arena-wide commitment to aluminum, reusable, recyclable beverage containers. Every fan takes home a keepsake.</p>
+  </div>
+</div>
+
+<!-- ===== BARRY'S ===== -->
+<div class="partner">
+  <img class="partner-img" src="assets/cobrand-pages/page_07.jpg" alt="Barry's" loading="lazy">
+  <div class="partner-body reveal">
+    <div class="impact-row">
+      <div class="impact-num">6.7M</div>
+      <div class="impact-label">plastic bottles eliminated</div>
+    </div>
+    <p class="partner-desc"><strong>Barry's</strong> — <span class="hl">50+ studios worldwide</span>. LED lighting, recycled flooring, Energy Star HVAC — and a reusable PATH bottle in every guest's hand. Sustainability baked into the brand.</p>
+  </div>
+</div>
+
+<!-- ===== ORANGETHEORY ===== -->
+<div class="partner">
+  <img class="partner-img" src="assets/cobrand-pages/page_08.jpg" alt="Orangetheory Fitness" loading="lazy">
+  <div class="partner-body reveal">
+    <div class="impact-row">
+      <div class="impact-num">4.4M</div>
+      <div class="impact-label">plastic bottles eliminated</div>
+    </div>
+    <p class="partner-desc"><strong>Orangetheory Fitness</strong> — one of the world's fastest-growing fitness chains. <span class="hl">1,200 studios</span> nationally and internationally. All plastic bottled water replaced with PATH.</p>
+  </div>
+</div>
+
+<!-- ===== BMW ===== -->
+<div class="partner">
+  <img class="partner-img" src="assets/cobrand-pages/page_09.jpg" alt="BMW Championship" loading="lazy">
+  <div class="partner-body reveal">
+    <div class="impact-row">
+      <div class="impact-num">420K</div>
+      <div class="impact-label">plastic bottles eliminated</div>
+    </div>
+    <p class="partner-desc"><strong>BMW Championship</strong> — Enlighten Award winner for <span class="hl">Sustainable Process</span>. A car seat 90% lower in carbon meets a bottle that's <span class="hl">100% recyclable</span>. Premium brands, shared values.</p>
+  </div>
+</div>
+
+<!-- ===== I LOVE NY ===== -->
+<div class="partner">
+  <img class="partner-img" src="assets/cobrand-pages/page_10.jpg" alt="I Love NY" loading="lazy">
+  <div class="partner-body reveal">
+    <div class="impact-row">
+      <div class="impact-num">850K</div>
+      <div class="impact-label">plastic bottles eliminated annually</div>
+    </div>
+    <p class="partner-desc"><strong>I ❤️ NY</strong> — NY State Dept. of Economic Development. <span class="hl">500 water fountains</span> installed across all five boroughs. Visitors take a piece of the city home — in aluminum, not plastic.</p>
+  </div>
+</div>
+
+<!-- ===== ALO YOGA ===== -->
+<div class="partner">
+  <img class="partner-img" src="assets/cobrand-pages/page_11.jpg" alt="Alo Yoga" loading="lazy">
+  <div class="partner-body reveal">
+    <div class="impact-row">
+      <div class="impact-num">350K</div>
+      <div class="impact-label">plastic bottles eliminated</div>
+    </div>
+    <p class="partner-desc"><strong>Alo Yoga</strong> — HQ powered by <span class="hl">100% renewable energy</span>. Co-branded PATH bottles extend their sustainability commitment into every customer's hands.</p>
+  </div>
+</div>
+
+<!-- ===== WYNWOOD WALLS ===== -->
+<div class="partner">
+  <img class="partner-img" src="assets/cobrand-pages/page_12.jpg" alt="Greg Mike × Wynwood Walls" loading="lazy">
+  <div class="partner-body reveal">
+    <div class="impact-row">
+      <div class="impact-num">250K</div>
+      <div class="impact-label">plastic bottles eliminated</div>
+    </div>
+    <p class="partner-desc"><strong>Greg Mike × Wynwood Walls</strong> — the world's largest street art venue, Miami. Limited-edition art bottles that are <span class="hl">as collectible as they are sustainable</span>.</p>
+  </div>
+</div>
+
+<!-- ===== RHODE ===== -->
+<div class="partner">
+  <img class="partner-img" src="assets/cobrand-pages/page_13.jpg" alt="Rhode" loading="lazy">
+  <div class="partner-body reveal">
+    <div class="impact-row">
+      <div class="impact-num">8.4K</div>
+      <div class="impact-label">plastic bottles eliminated</div>
+    </div>
+    <p class="partner-desc"><strong>Rhode</strong> — clean, vegan, <span class="hl">Leaping Bunny &amp; PETA certified</span>. Co-branded PATH bottles as a staple at every special event and pop-up. Beauty and sustainability, inseparable.</p>
+  </div>
+</div>
+
+<!-- ===== ADIDAS ===== -->
+<div class="partner">
+  <img class="partner-img" src="assets/cobrand-pages/page_14.jpg" alt="Adidas" loading="lazy">
+  <div class="partner-body reveal">
+    <div class="impact-row">
+      <div class="impact-num">80K</div>
+      <div class="impact-label">plastic bottles eliminated</div>
+    </div>
+    <p class="partner-desc"><strong>Adidas</strong> — one of the globe's leading sustainable apparel brands. Plastic water bottles <span class="hl">removed from their corporate HQ</span> in Portland, OR. Replaced with PATH.</p>
+  </div>
+</div>
+
+<!-- ===== FOUR SEASONS ===== -->
+<div class="partner">
+  <img class="partner-img" src="assets/cobrand-pages/page_15.jpg" alt="Four Seasons Maui" loading="lazy">
+  <div class="partner-body reveal">
+    <div class="impact-row">
+      <div class="impact-num">1.3M</div>
+      <div class="impact-label">plastic bottles eliminated</div>
+    </div>
+    <p class="partner-desc"><strong>Four Seasons, Maui</strong> — the <span class="hl">trailblazer for the entire Four Seasons portfolio</span>. Over 100,000 single-use bottles replaced on the island. Deemed a "phenomenal sustainable solution" for guests and members.</p>
+  </div>
+</div>
+
+<!-- ===== SACRAMENTO KINGS ===== -->
+<div class="partner">
+  <img class="partner-img" src="assets/cobrand-pages/page_16.jpg" alt="Sacramento Kings" loading="lazy">
+  <div class="partner-body reveal">
+    <div class="impact-row">
+      <div class="impact-num">6.7M</div>
+      <div class="impact-label">plastic bottles eliminated annually</div>
+    </div>
+    <p class="partner-desc"><strong>Sacramento Kings</strong> — Golden 1 Center, the world's first <span class="hl">LEED Platinum arena</span>. PATH Grab-and-Go location with Amazon's <span class="hl">Just Walk Out</span> technology. The future of fan hydration.</p>
+  </div>
+</div>
+
+<!-- ===== SF STATE ===== -->
+<div class="partner">
+  <img class="partner-img" src="assets/cobrand-pages/page_17.jpg" alt="SF State University" loading="lazy">
+  <div class="partner-body reveal">
+    <div class="impact-row">
+      <div class="impact-num">1M</div>
+      <div class="impact-label">plastic bottles eliminated</div>
+    </div>
+    <p class="partner-desc"><strong>San Francisco State University</strong> — <span class="hl">Gold Rating for Campus Sustainability</span>. A recognized environmental education leader partnering with PATH to back their commitments with action.</p>
+  </div>
+</div>
+
+<!-- ===== NATIONAL PARKS ===== -->
+<div class="partner">
+  <img class="partner-img" src="assets/cobrand-pages/page_18.jpg" alt="National Park Service" loading="lazy">
+  <div class="partner-body reveal">
+    <div class="impact-row">
+      <div class="impact-num">1.2M</div>
+      <div class="impact-label">plastic bottles eliminated</div>
+    </div>
+    <p class="partner-desc"><strong>National Park Service</strong> — single-use plastic water banned across parks. Yellowstone achieved a <span class="hl">60% sell-through rate</span> — one of the country's most visited parks, choosing aluminum over plastic.</p>
+  </div>
+</div>
+
+<!-- ===== CHANEL ===== -->
+<div class="partner">
+  <img class="partner-img" src="assets/cobrand-pages/page_19.jpg" alt="Chanel" loading="lazy">
+  <div class="partner-body reveal">
+    <div class="impact-row">
+      <div class="impact-num">880K</div>
+      <div class="impact-label">plastic bottles eliminated annually</div>
+    </div>
+    <p class="partner-desc"><strong>Chanel</strong> — net-zero carbon by 2050. No single-use plastic by 2030. A <span class="gold">high-end co-brand partnership</span> where the world's most iconic luxury house meets the world's most sustainable bottle.</p>
+  </div>
+</div>
+
+<!-- ===== GRAND WAILEA ===== -->
+<div class="partner">
+  <img class="partner-img" src="assets/cobrand-pages/page_20.jpg" alt="Grand Wailea" loading="lazy">
+  <div class="partner-body reveal">
+    <div class="impact-row">
+      <div class="impact-num">1.3M</div>
+      <div class="impact-label">plastic bottles eliminated</div>
+    </div>
+    <p class="partner-desc"><strong>Grand Wailea</strong>, Maui — a Waldorf Astoria Resort. <span class="hl">800+ rooms</span>, over 1 million single-use bottles replaced. Proof that luxury and sustainability scale together.</p>
+  </div>
+</div>
+
+<!-- ===== ADDITIONAL PAGES ===== -->
+<div class="partner">
+  <img class="partner-img" src="assets/cobrand-pages/page_21.jpg" alt="Additional Partners" loading="lazy">
+  <div class="partner-body reveal">
+    <p class="partner-desc">And the portfolio keeps growing — from <span class="hl">hospitality</span> and <span class="hl">sports</span> to <span class="gold">fashion</span>, <span class="hl">wellness</span>, and <span class="hl">culture</span>. Every partner, one shared mission: <strong>end single-use plastic</strong>.</p>
+  </div>
+</div>
+
+<div class="partner">
+  <img class="partner-img" src="assets/cobrand-pages/page_22.jpg" alt="Additional Partners" loading="lazy">
+  <div class="partner-body reveal">
+    <p class="partner-desc">PATH's co-brand model is <strong>proven at scale</strong> — across <span class="hl">20+ global brands</span>, tens of millions of plastic bottles diverted. <span class="gold">ADNOC Distribution is next.</span></p>
+  </div>
+</div>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="cta-logos">
+    <img src="assets/path_logo_white.svg" alt="PATH">
+    <div class="cd"></div>
+    <img src="assets/oasis_logo_clean.png" alt="ADNOC Oasis" style="height:36px">
+    <div class="cd"></div>
+    <img src="assets/wisewell_logo_transparent.png" alt="Wisewell" style="height:28px">
+  </div>
+  <h2>Now Imagine This at<br><span style="color:var(--gold)">380+ ADNOC Stations</span></h2>
+  <p class="lead">The same co-branding power trusted by Chanel, Four Seasons, and the NBA — coming to every ADNOC convenience store in the UAE.</p>
+  <a class='cta-btn' href='/'>
+    View Full Presentation
+    <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+  </a>
+</section>
+
+<script>
+window.addEventListener('scroll',()=>{document.getElementById('nav').classList.toggle('scrolled',window.scrollY>50)});
+
+// After trio pops in, transition to ADNOC Blue bottles
+setTimeout(()=>{
+  const hero=document.getElementById('hero');
+  const blue=document.getElementById('blueBottles');
+  // Shift background color to match ADNOC Blue image
+  hero.style.background='#030d2a';
+  // Trigger the blue bottles entrance
+  blue.classList.add('enter');
+},3200);
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target)}})
+},{threshold:.1,rootMargin:'0px 0px -20px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
