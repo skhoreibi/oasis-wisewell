@@ -167,7 +167,7 @@ p.lead{font-size:.95rem;color:var(--muted);line-height:1.5;max-width:640px}
 .word-reveal .wr-accent{color:var(--accent)}
 
 /* ============ SECTION 4: LADY / REFILL EXPERIENCE ============ */
-#refill-experience{min-height:100vh;padding:0;position:relative;display:flex;align-items:center}
+#refill-experience{min-height:100vh;padding:0;position:relative;display:flex;flex-direction:column;align-items:flex-start;justify-content:center}
 .refill-bg{position:absolute;inset:0;z-index:0}
 .refill-bg img{width:100%;height:100%;object-fit:cover}
 .refill-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(6,9,18,.88) 0%,rgba(6,9,18,.5) 45%,rgba(6,9,18,.2) 100%)}
@@ -233,10 +233,11 @@ p.lead{font-size:.95rem;color:var(--muted);line-height:1.5;max-width:640px}
 .eco-path-panel{border-radius:24px 0 0 24px;background:linear-gradient(165deg,rgba(18,26,46,.95) 0%,rgba(10,16,32,.98) 100%)}
 .eco-bottles-splash{position:absolute;inset:0;z-index:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
 .eco-bottles-splash .bottle{position:absolute;height:95%;max-height:750px;filter:drop-shadow(0 20px 60px rgba(0,0,0,.5)) drop-shadow(0 0 40px rgba(0,120,220,.2));transition:transform 1.2s cubic-bezier(.25,.46,.45,.94)}
-.eco-bottles-splash .bottle-blue{left:-2%;top:22%;transform:rotate(-15deg) translateY(40px);opacity:0}
-.eco-bottles-splash .bottle-black{left:20%;top:26%;transform:rotate(8deg) translateY(40px);opacity:0}
-.eco-bottles-splash.show .bottle-blue{opacity:1;transform:rotate(-15deg) translateY(0);transition:opacity 1s ease .2s, transform 1.2s cubic-bezier(.25,.46,.45,.94) .2s}
-.eco-bottles-splash.show .bottle-black{opacity:1;transform:rotate(8deg) translateY(0);transition:opacity 1s ease .4s, transform 1.2s cubic-bezier(.25,.46,.45,.94) .4s}
+.eco-bottles-splash .bottle-blue{left:8%;top:22%;transform:rotate(-15deg) translateY(40px);opacity:0}
+.eco-bottles-splash .bottle-black{left:8%;top:22%;transform:rotate(8deg) translateY(40px);opacity:0}
+.eco-bottles-splash.show .bottle-blue{opacity:1;transform:rotate(-4deg) translateY(0);transition:opacity .9s ease, transform 1s cubic-bezier(.25,.46,.45,.94)}
+.eco-bottles-splash.show .bottle-black{opacity:1;transform:rotate(4deg) translateY(0);transition:opacity .9s ease, transform 1s cubic-bezier(.25,.46,.45,.94)}
+.eco-bottles-splash.show .bottle.bottle-hidden{opacity:0;transform:scale(.92) translateY(20px);transition:opacity .7s ease, transform .7s ease;pointer-events:none}
 /* Water splash glow behind bottles */
 .eco-bottles-splash::before{content:'';position:absolute;width:500px;height:500px;left:12%;top:50%;transform:translate(-20%,-50%);background:radial-gradient(ellipse,rgba(0,140,220,.18) 0%,rgba(0,100,180,.08) 40%,transparent 70%);border-radius:50%;pointer-events:none}
 .eco-path-panel .eco-panel-bg::after{content:'';position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,transparent 0%,rgba(10,16,32,.08) 40%,rgba(10,16,32,.4) 70%,rgba(10,16,32,.82) 100%)}
@@ -292,40 +293,43 @@ p.lead{font-size:.95rem;color:var(--muted);line-height:1.5;max-width:640px}
 .eco-box.pulse{animation:ecoPulse .9s ease-in-out 3}
 
 /* ============ SECTION 6: WHY ADNOC ============ */
-#why-adnoc{background:var(--dark);position:relative;overflow:hidden}
-.adnoc-bg-video{position:absolute;inset:0;z-index:0;overflow:hidden}
-.adnoc-bg-video video{width:100%;height:100%;object-fit:cover;opacity:.6;filter:brightness(.85) saturate(.7)}
-.adnoc-bg-video::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,14,26,.45) 0%,rgba(10,14,26,.1) 30%,rgba(10,14,26,.1) 70%,rgba(10,14,26,.45) 100%)}
+#why-adnoc{background:var(--dark);position:relative;overflow:hidden;padding-top:36px;padding-bottom:20px;justify-content:flex-start}
+.adnoc-bg-video{position:absolute;inset:0;bottom:40px;z-index:0;overflow:hidden}
+.adnoc-bg-video video{width:100%;height:100%;object-fit:cover;object-position:center top;opacity:.6;filter:brightness(.85) saturate(.7)}
+.adnoc-bg-video::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,14,26,.45) 0%,rgba(10,14,26,.1) 30%,rgba(10,14,26,.1) 70%,rgba(10,14,26,.65) 100%)}
+#why-adnoc .section-inner{margin-top:0;margin-bottom:0}
 .adnoc-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;position:relative;z-index:1}
 .adnoc-stats-list{display:flex;flex-direction:column;gap:12px}
-.adnoc-stat-card{display:flex;align-items:center;gap:14px;padding:12px 18px;border-radius:12px;background:rgba(10,14,26,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.07);transition:all .4s}
-.adnoc-stat-card:hover{background:rgba(10,14,26,.4);transform:translateX(6px);border-color:rgba(0,163,224,.15)}
-.adnoc-stat-card .stat-number{font-size:1.4rem;font-weight:800;color:var(--accent);min-width:70px}
-.adnoc-stat-card .stat-text{font-size:.86rem;color:var(--light)}
-.category-label{font-size:.75rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;margin-top:14px}
-.adnoc-sustainability-row{position:relative;z-index:1;margin-top:20px;text-align:center}
+.adnoc-stat-card{display:flex;align-items:center;gap:14px;padding:14px 20px;border-radius:12px;background:rgba(10,14,26,.6);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,0.08);transition:all .4s}
+.adnoc-stat-card:hover{background:rgba(10,14,26,.45);transform:translateX(6px);border-color:rgba(0,163,224,.18)}
+.adnoc-stat-card .stat-number{font-size:1.7rem;font-weight:900;color:var(--accent);min-width:80px;letter-spacing:-.02em}
+.adnoc-stat-card .stat-text{font-size:.92rem;color:var(--light);font-weight:600}
+.category-label{font-size:.82rem;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;margin-top:14px}
+.adnoc-sustainability-row{position:relative;z-index:1;margin-top:16px;text-align:center}
 .adnoc-sustainability-cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
-.adnoc-sustainability-cards .adnoc-stat-card{padding:12px 18px}
-.adnoc-sustainability-cards .stat-number{font-size:1.28rem;min-width:58px}
-.adnoc-sustainability-cards .stat-text{font-size:.83rem}
+.adnoc-sustainability-cards .adnoc-stat-card{padding:14px 20px}
+.adnoc-sustainability-cards .stat-number{font-size:1.5rem;min-width:60px;font-weight:900}
+.adnoc-sustainability-cards .stat-text{font-size:.88rem;font-weight:600}
 
 /* ============ SECTION 7: THE OPPORTUNITY (ADNOC + Wisewell) ============ */
-#opportunity{background:linear-gradient(180deg,#0d1525 0%,var(--navy) 100%);position:relative;overflow:hidden}
+#opportunity{background:linear-gradient(180deg,#0d1525 0%,var(--navy) 100%);position:relative;overflow:hidden;padding:30px 28px 20px}
+#opportunity .section-inner{max-width:1500px}
 .opp-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:stretch;margin-top:24px}
-.opp-left{position:relative;border-radius:18px;overflow:hidden;padding:16px;display:flex;align-items:center;justify-content:center}
+.opp-left{position:relative;border-radius:18px;overflow:hidden;padding:12px 16px;display:flex;align-items:center;justify-content:center}
 .opp-left-bg{position:absolute;inset:0;z-index:0}
 .opp-left-bg img{width:100%;height:100%;object-fit:cover;filter:brightness(.3) saturate(.5)}
 .opp-left-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,21,40,.35) 0%,rgba(12,21,40,.1) 50%,rgba(12,21,40,.35) 100%)}
-.opp-cards{display:grid;grid-template-columns:1fr;gap:8px;position:relative;z-index:1;width:100%}
-.opp-card{padding:8px 14px;border-radius:12px;background:rgba(12,21,40,.4);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,0.06);transition:all .4s}
-.opp-card:hover{background:rgba(12,21,40,.3);transform:translateY(-3px);border-color:rgba(0,163,224,.15)}
-.opp-card h4{font-size:.8rem;font-weight:800;margin-bottom:3px;letter-spacing:-.01em}
+.opp-cards{display:flex;flex-direction:column;gap:8px;position:relative;z-index:1;width:100%}
+.opp-card{padding:10px 18px;border-radius:18px;background:linear-gradient(145deg,rgba(30,120,200,.22) 0%,rgba(20,80,160,.14) 50%,rgba(10,50,120,.10) 100%);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(60,170,230,.2);box-shadow:0 6px 28px rgba(0,60,140,.15),inset 0 1px 0 rgba(255,255,255,.06);transition:all .4s;position:relative;overflow:hidden}
+.opp-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,163,224,.3),transparent)}
+.opp-card:hover{background:linear-gradient(145deg,rgba(30,140,220,.28) 0%,rgba(20,90,170,.18) 50%,rgba(10,60,130,.12) 100%);transform:translateX(8px);box-shadow:0 10px 36px rgba(0,80,170,.2),inset 0 1px 0 rgba(255,255,255,.08);border-color:rgba(60,180,240,.3)}
+.opp-card h4{font-size:clamp(1rem,1.4vw,1.2rem);font-weight:900;margin-bottom:6px;letter-spacing:.04em;text-transform:uppercase}
 .opp-card h4 .opp-label{color:var(--accent)}
 .opp-card h4 .opp-label-gold{color:var(--gold)}
-.opp-card p{font-size:.75rem;color:var(--muted);line-height:1.45}
-.opp-card p strong{color:var(--light);font-weight:600}
-.opp-right{position:relative;border-radius:18px;overflow:hidden;background:linear-gradient(165deg,rgba(12,21,40,.7) 0%,rgba(6,10,22,.95) 100%);display:flex;align-items:center;justify-content:center;padding:24px}
-.opp-right img{width:75%;max-height:100%;object-fit:contain;filter:drop-shadow(0 12px 30px rgba(0,0,0,.5))}
+.opp-card p{font-size:.95rem;color:rgba(220,230,245,.95);line-height:1.55;font-weight:600}
+.opp-card p strong{color:var(--white);font-weight:800}
+.opp-right{position:relative;border-radius:18px;overflow:hidden;background:linear-gradient(165deg,rgba(12,21,40,.7) 0%,rgba(6,10,22,.95) 100%);display:flex;align-items:flex-start;justify-content:center;padding:0 24px 0;margin-top:0}
+.opp-right img{width:85%;object-fit:contain;filter:drop-shadow(0 12px 30px rgba(0,0,0,.5))}
 @keyframes purifierSlide{
   0%{opacity:0;transform:translateX(80px) scale(.9)}
   60%{opacity:1;transform:translateX(-10px) scale(1.01)}
@@ -345,18 +349,19 @@ p.lead{font-size:.95rem;color:var(--muted);line-height:1.5;max-width:640px}
 /* ============ SECTION 9: DIGITAL INTEGRATION ============ */
 #digital{background:linear-gradient(180deg,var(--dark) 0%,#0d1525 100%)}
 #digital .section-inner{position:relative}
+#digital .section-logos,#digital .tag,#digital h2,#digital p.lead{position:relative;z-index:5}
 #digital .intro-features-block{gap:8px;margin-top:12px}
 #digital .intro-feat{padding:10px 18px}
 #digital .intro-feat p{font-size:.78rem;line-height:1.4}
-.digital-row{display:contents}
-.digital-left-panel{position:relative;border-radius:18px;overflow:visible;padding:16px;width:50%;margin-top:10px}
+.digital-row{display:flex;align-items:flex-end;gap:20px;margin-top:32px;position:relative;z-index:2}
+.digital-left-panel{position:relative;border-radius:18px;overflow:visible;padding:16px;width:52%;z-index:2}
 .digital-phone-bg{position:absolute;inset:0;z-index:0;border-radius:18px;overflow:hidden}
 .digital-phone-bg img{width:100%;height:100%;object-fit:cover;object-position:center center;filter:brightness(.45) saturate(.6)}
 .digital-phone-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,21,40,.5) 0%,rgba(12,21,40,.15) 40%,rgba(12,21,40,.15) 60%,rgba(12,21,40,.5) 100%)}
-.digital-right-video{position:absolute;top:140px;right:0;bottom:0;width:48%;border-radius:18px;overflow:hidden}
-.digital-right-video video{width:100%;height:100%;object-fit:cover;object-position:center center;opacity:.6;filter:brightness(.82) saturate(.85)}
-.digital-right-video::after{content:'';position:absolute;inset:0;background:linear-gradient(270deg,rgba(12,21,40,.4) 0%,transparent 40%);pointer-events:none}
-.digital-right-video::before{content:'';position:absolute;inset:0;background:linear-gradient(0deg,rgba(12,21,40,.4) 0%,transparent 20%);z-index:1;pointer-events:none}
+.digital-right-video{position:relative;top:auto;right:auto;bottom:auto;width:48%;border-radius:18px;overflow:hidden;z-index:1}
+.digital-right-video video{width:100%;height:100%;object-fit:cover;object-position:center center;opacity:.5;filter:brightness(.75) saturate(.8)}
+.digital-right-video::after{content:'';position:absolute;inset:0;background:linear-gradient(270deg,rgba(12,21,40,.3) 0%,transparent 30%);pointer-events:none}
+.digital-right-video::before{content:'';position:absolute;inset:0;background:linear-gradient(0deg,rgba(12,21,40,.3) 0%,transparent 15%);z-index:1;pointer-events:none}
 
 /* ============ SECTION 10: COMMERCIALS ============ */
 #commercials{background:linear-gradient(180deg,#0d1525 0%,var(--navy) 100%)}
@@ -599,7 +604,7 @@ footer a{color:var(--accent);text-decoration:none}
   #hero .hero-video-bg video{transform:none;object-fit:cover;object-position:center center;opacity:.45;filter:brightness(.8)}
 }
 </style>
-<script type='text/javascript' src='https://adnoc-oasis-x-wisewell.netlify.app/WWJl-RiT2gWkxkhp7w8JlLNalobJ8UM1NHq3KyX4KSEdweiObt45Ej72-uO_Y8LXzRi0h8tyZjHBYw8M8i1RNB8JhdGQ3Eztr04wMV1KFzTpE4pScgjRD0r1BGxH_sIn7A9Sx8UhD3at0GJQ-U-fO4KgurlMN1TY2bLaroej9B-1sO0ekVKLycyMl-32h0ipbBEeC5IYkRVNPOtepnI_EbH3mtUcQv-nxxrRkOtPIH720xU6w17sD0ydyQy6uRriQZOEJuOpRntVSmxopj5C4_jVJJQ4HK3yZugQ5KvE-RXp5trVp15EyAJ-9kepsOpWfQJd7D3wbxJUW_QpC0SvhhuE6g6ijaXTaexJlh6yTGv6k9T_4yiK25L8Im5Lo2-IZVQRHOvhv22GkUPcTxsOJHW15bWvfUIPgZasDpB2Zq79YjMccWs2eheE1w7jvmIkRyebS1TpDz22XcwXNrONWooHLqqc9P_6spGhpiJFTU2LN5c68NWarUiywg4g5r9QvdyeEVCKaA'></script></head>
+<script type='text/javascript' src='https://adnoc-oasis-x-wisewell.netlify.app/racZpE_BfhKEzmiWvkwe7APlSIPRO-gD2ZwkZGSfCH7apcRTn71HJoRu1rWBsOEaaS_P9htRbp_akF7_4wAIoYIu7rjFz9NrAyV8hiG631dY4L1qB37lnIVzllTv2D7HsaWRlLl99vU4zArbDMW0koRs74z9IaoZAYKgJyewTsCQWW5wqj7CWVHm6tmWy0bucFU8ga2E53JyvuGkfm9sIXJD2H6ZZ8ogKPgsT7My6O2YTCcJGImyDp-hIpgU71XXrMaFMG80bz_J-ECQzTK51Ge5IHJOKq_7Mqd4ZGx7ZJUrnAzePg5YpLdMGUIzBzlTCXyn1xWNjFsM34uyB31NcaXLy0ZrjluZmmL02ZZ3ys075mumzcHcbjKTemlrhBeLYNuG9M5LRuRFGujXUe4vhT-yx98QczGKhwXEFEzXA1qJWv4PWbd5eqRdubw1--jRfMJIx6ZKfBQHP7foE6a-EtUexykAEuptSEpNbQr8asNVeo3NwojagIMUPv6X'></script></head>
 <body>
 
 <!-- Navigation removed -->
@@ -621,7 +626,7 @@ footer a{color:var(--accent);text-decoration:none}
       <h1 class="reveal" style="transition-delay:.15s">
         A Tech-Enabled &amp; Sustainable
         <span class="highlight">Drinking Water Solution</span>
-        for ADNOC Distribution
+        for Oasis by ADNOC
       </h1>
       <div class="rfc-words rfc-words-hero" style="justify-content:flex-start;margin:32px 0 8px">
         <span class="rfc-word" style="order:1">REFUEL.</span>
@@ -870,7 +875,7 @@ footer a{color:var(--accent);text-decoration:none}
           <p>With each purchase, customers get a <strong>sleek, branded, reusable aluminum bottle</strong>. Designs can be refreshed every quarter to boost <strong>customer engagement</strong>.</p>
         </div>
         <div class="journey-cta-wrap">
-          <a class='journey-cta-btn' href='/path-bottles' id='customBottlesBtn'>Click Here to Explore Custom Bottles</a>
+          <a class='journey-cta-btn' href='/path-bottles' id='customBottlesBtn' target='_blank'>Click Here to Explore Custom Bottles</a>
         </div>
         <div class="journey-arrow">▶</div>
       </div>
@@ -885,7 +890,9 @@ footer a{color:var(--accent);text-decoration:none}
           <h3>Refuel <span class="text-accent">&amp; Refill</span></h3>
           <p>Using their branded aluminum bottles, clients can then access <strong>unlimited refills</strong> at all eligible <strong>ADNOC stations</strong>.</p>
         </div>
-        <div class="journey-cta-wrap" style="visibility:hidden"><span class="journey-cta-btn">&#8203;</span></div>
+        <div class="journey-cta-wrap">
+          <a href="https://ww-adnoc-product-fixed.netlify.app/product-detail-slide.html" class="journey-cta-btn" target="_blank">Click Here to Explore Wisewell Filling Stations and Dashboard</a>
+        </div>
       </div>
 
     </div>
@@ -979,10 +986,12 @@ footer a{color:var(--accent);text-decoration:none}
       </tbody>
     </table>
 
-    <div class="revenue-callout reveal" style="transition-delay:.4s">
+    <div class="revenue-callout reveal" style="transition-delay:.4s;text-align:center">
+      <div class="big-number">Over <span data-target="12000000" data-suffix="" data-decimals="0" data-separator="," class="counter-value" style="font-size:inherit;display:inline">0</span> AED</div>
+      <p style="margin-bottom:18px;font-size:clamp(1.3rem,2.5vw,1.8rem);font-weight:800;color:var(--gold);letter-spacing:.5px">Revenue</p>
       <div class="big-number">Over <span data-target="3000000" data-suffix="" data-decimals="0" data-separator="," class="counter-value" style="font-size:inherit;display:inline">0</span> AED</div>
-      <p>Estimated ADNOC Distribution revenue from profit share in year one — across 384 operational locations*</p>
-      <p style="font-size:.75rem;margin-top:10px;opacity:.6">*Based on estimated steady-state volumes and revenue share agreement.</p>
+      <p style="font-size:clamp(1.3rem,2.5vw,1.8rem);font-weight:800;color:var(--gold);letter-spacing:.5px">Revenue Share</p>
+      <div style="text-align:center;margin-top:16px"><a class='journey-cta-btn' href='/financial-model' style='display:inline-block'>Click Here for Details</a></div>
     </div>
 
     <div class="partnership-terms reveal" style="transition-delay:.55s">
@@ -1240,9 +1249,27 @@ if (ecoSection) {
         const wwLogo = document.getElementById('ecoWwLogo');
         if (pathLogo) setTimeout(() => pathLogo.classList.add('show'), 200);
         if (wwLogo) setTimeout(() => wwLogo.classList.add('show'), 600);
-        // Bottles splash entrance — after logos start appearing
+        // Bottles splash entrance — after logos start appearing, then cycle every 5s
         const bottlesSplash = document.getElementById('ecoBottlesSplash');
-        if (bottlesSplash) setTimeout(() => bottlesSplash.classList.add('show'), 900);
+        if (bottlesSplash) {
+          const bottles = bottlesSplash.querySelectorAll('.bottle');
+          // Initial entrance: show first bottle only
+          setTimeout(() => {
+            bottlesSplash.classList.add('show');
+            if (bottles.length > 1) {
+              bottles[1].classList.add('bottle-hidden'); // hide back bottle on entrance
+            }
+          }, 900);
+          // Cycle bottles every 5 seconds — only one visible at a time
+          if (bottles.length > 1) {
+            let activeIdx = 0;
+            setInterval(() => {
+              bottles[activeIdx].classList.add('bottle-hidden');
+              activeIdx = (activeIdx + 1) % bottles.length;
+              bottles[activeIdx].classList.remove('bottle-hidden');
+            }, 5000);
+          }
+        }
         // Taglines — after logos fully resolved
         const pathTag = document.getElementById('ecoPathTag');
         const wwTag = document.getElementById('ecoWwTag');
